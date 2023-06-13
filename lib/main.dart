@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_showcase/pigeon.dart';
 
 void main() {
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Flutter Demo Shadowflight'),
     );
   }
 }
@@ -52,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _controller = TextEditingController(text: "");
   final BookApi _api = BookApi();
   final List<Book?> _apiResult = List.empty(growable: true);
+  String _userId = "";
 
   @override
   Widget build(BuildContext context) {
@@ -63,33 +65,73 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'Result:',
-            ),
-            Text(
-              _apiResult.map((e) => "${e!.title} - ${e.author}").join(", "),
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            TextField(
-              maxLength: 15,
-              controller: _controller,
-              textInputAction: TextInputAction.done,
-              onSubmitted: (text) {
-                _api.search(text).then((value) {
-                  debugPrint("searching for $text, result=$value");
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: TextField(
+                decoration: InputDecoration(labelText: 'User ID'),
+                maxLength: 15,
+                controller: _controller,
+                textInputAction: TextInputAction.done,
+                onChanged: (text) {
                   setState(() {
-                    _apiResult.clear();
-                    _apiResult.addAll(value);
+                    _userId = text.trim();
                   });
-                }, onError: (error, stacktrace) {
-                  debugPrint(error);
-                  debugPrintStack(stackTrace: stacktrace);
-                });
-              },
-            )
+
+                  _api.search(text).then((value) {
+                    final response =
+                    value.map((e) => "${e!.title}: ${e.author}").join(", ");
+                    debugPrint("typed=$text, result=$response");
+                    setState(() {
+                      _apiResult.clear();
+                      _apiResult.addAll(value);
+                    });
+                  }, onError: (error, stacktrace) {
+                    debugPrint(error);
+                    debugPrintStack(stackTrace: stacktrace);
+                  });
+                },
+                onSubmitted: (text) {
+                },
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+                child: Text(
+                  _apiResult.map((e) => "${e!.title}: ${e.author}").join(", "),
+                  style: Theme.of(context).textTheme.bodySmall,
+                  textAlign: TextAlign.start,
+                ),
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+                child: ElevatedButton(
+                  child: const Text('Open SDK'),
+                  onPressed: (_userId.isEmpty)
+                      ? null
+                      : () {
+                          {
+                            _openShadowflightUI();
+                          }
+                        },
+                ),
+              ),
+            ),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  Future<void> _openShadowflightUI() async {
+    try {
+      await _api.openShadowflightUI(_userId);
+    } on PlatformException catch (e) {
+      debugPrint("Error: '${e.message}'.");
+    }
   }
 }
