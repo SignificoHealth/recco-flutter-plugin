@@ -1,29 +1,25 @@
 package com.example.flutter_showcase
 
 import android.content.Context
-import android.content.Intent
-import android.os.Build.VERSION.SDK
 import android.util.Log
 import androidx.annotation.NonNull
-import androidx.core.content.ContextCompat.startActivity
 import com.shadowflight.ui.UIApi
-import dev.flutter.pigeon.Book
-import dev.flutter.pigeon.BookApi
+import dev.flutter.pigeon.Message
+import dev.flutter.pigeon.ShadowflightApi
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 
 private const val TAG = "Shadowflight"
 
-private class PigeonApiImplementation(private val context: Context) : BookApi {
-    override fun search(keyword: String): List<Book> {
-        val result = Book(
+private class PigeonApiImplementation(private val context: Context) : ShadowflightApi {
+    override fun replyBackTest(text: String): Message {
+        return Message(
             title = "Message returned from Android",
-            author = keyword
+            text = text
         )
-        return listOf(result)
     }
 
-    override fun openShadowflightUI(userId: String) {
+    override fun openShadowflightSDK(userId: String) {
         UIApi.login(userId = userId)
         UIApi.navigateToFeed(context)
         Log.d(TAG, "Open SDK from Android: userId=$userId")
@@ -35,6 +31,6 @@ class MainActivity : FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
 
         val api = PigeonApiImplementation(this)
-        BookApi.setUp(flutterEngine.dartExecutor.binaryMessenger, api)
+        ShadowflightApi.setUp(flutterEngine.dartExecutor.binaryMessenger, api)
     }
 }

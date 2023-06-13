@@ -10,24 +10,24 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class Book;
+@class Message;
 
-@interface Book : NSObject
+@interface Message : NSObject
 + (instancetype)makeWithTitle:(nullable NSString *)title
-    author:(nullable NSString *)author;
+    text:(nullable NSString *)text;
 @property(nonatomic, copy, nullable) NSString * title;
-@property(nonatomic, copy, nullable) NSString * author;
+@property(nonatomic, copy, nullable) NSString * text;
 @end
 
-/// The codec used by BookApi.
-NSObject<FlutterMessageCodec> *BookApiGetCodec(void);
+/// The codec used by ShadowflightApi.
+NSObject<FlutterMessageCodec> *ShadowflightApiGetCodec(void);
 
-@protocol BookApi
+@protocol ShadowflightApi
 /// @return `nil` only when `error != nil`.
-- (nullable NSArray<Book *> *)searchKeyword:(NSString *)keyword error:(FlutterError *_Nullable *_Nonnull)error;
-- (void)openShadowflightUIUserId:(NSString *)userId error:(FlutterError *_Nullable *_Nonnull)error;
+- (nullable Message *)replyBackTestText:(NSString *)text error:(FlutterError *_Nullable *_Nonnull)error;
+- (void)openShadowflightSDKUserId:(NSString *)userId error:(FlutterError *_Nullable *_Nonnull)error;
 @end
 
-extern void BookApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<BookApi> *_Nullable api);
+extern void ShadowflightApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<ShadowflightApi> *_Nullable api);
 
 NS_ASSUME_NONNULL_END

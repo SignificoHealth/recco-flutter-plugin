@@ -8,37 +8,37 @@ import 'dart:typed_data' show Float64List, Int32List, Int64List, Uint8List;
 import 'package:flutter/foundation.dart' show ReadBuffer, WriteBuffer;
 import 'package:flutter/services.dart';
 
-class Book {
-  Book({
+class Message {
+  Message({
     this.title,
-    this.author,
+    this.text,
   });
 
   String? title;
 
-  String? author;
+  String? text;
 
   Object encode() {
     return <Object?>[
       title,
-      author,
+      text,
     ];
   }
 
-  static Book decode(Object result) {
+  static Message decode(Object result) {
     result as List<Object?>;
-    return Book(
+    return Message(
       title: result[0] as String?,
-      author: result[1] as String?,
+      text: result[1] as String?,
     );
   }
 }
 
-class _BookApiCodec extends StandardMessageCodec {
-  const _BookApiCodec();
+class _ShadowflightApiCodec extends StandardMessageCodec {
+  const _ShadowflightApiCodec();
   @override
   void writeValue(WriteBuffer buffer, Object? value) {
-    if (value is Book) {
+    if (value is Message) {
       buffer.putUint8(128);
       writeValue(buffer, value.encode());
     } else {
@@ -50,29 +50,29 @@ class _BookApiCodec extends StandardMessageCodec {
   Object? readValueOfType(int type, ReadBuffer buffer) {
     switch (type) {
       case 128: 
-        return Book.decode(readValue(buffer)!);
+        return Message.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
     }
   }
 }
 
-class BookApi {
-  /// Constructor for [BookApi].  The [binaryMessenger] named argument is
+class ShadowflightApi {
+  /// Constructor for [ShadowflightApi].  The [binaryMessenger] named argument is
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
-  BookApi({BinaryMessenger? binaryMessenger})
+  ShadowflightApi({BinaryMessenger? binaryMessenger})
       : _binaryMessenger = binaryMessenger;
   final BinaryMessenger? _binaryMessenger;
 
-  static const MessageCodec<Object?> codec = _BookApiCodec();
+  static const MessageCodec<Object?> codec = _ShadowflightApiCodec();
 
-  Future<List<Book?>> search(String arg_keyword) async {
+  Future<Message> replyBackTest(String arg_text) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BookApi.search', codec,
+        'dev.flutter.pigeon.ShadowflightApi.replyBackTest', codec,
         binaryMessenger: _binaryMessenger);
     final List<Object?>? replyList =
-        await channel.send(<Object?>[arg_keyword]) as List<Object?>?;
+        await channel.send(<Object?>[arg_text]) as List<Object?>?;
     if (replyList == null) {
       throw PlatformException(
         code: 'channel-error',
@@ -90,13 +90,13 @@ class BookApi {
         message: 'Host platform returned null value for non-null return value.',
       );
     } else {
-      return (replyList[0] as List<Object?>?)!.cast<Book?>();
+      return (replyList[0] as Message?)!;
     }
   }
 
-  Future<void> openShadowflightUI(String arg_userId) async {
+  Future<void> openShadowflightSDK(String arg_userId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BookApi.openShadowflightUI', codec,
+        'dev.flutter.pigeon.ShadowflightApi.openShadowflightSDK', codec,
         binaryMessenger: _binaryMessenger);
     final List<Object?>? replyList =
         await channel.send(<Object?>[arg_userId]) as List<Object?>?;

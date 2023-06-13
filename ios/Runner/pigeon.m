@@ -21,55 +21,55 @@ static id GetNullableObjectAtIndex(NSArray *array, NSInteger key) {
   return (result == [NSNull null]) ? nil : result;
 }
 
-@interface Book ()
-+ (Book *)fromList:(NSArray *)list;
-+ (nullable Book *)nullableFromList:(NSArray *)list;
+@interface Message ()
++ (Message *)fromList:(NSArray *)list;
++ (nullable Message *)nullableFromList:(NSArray *)list;
 - (NSArray *)toList;
 @end
 
-@implementation Book
+@implementation Message
 + (instancetype)makeWithTitle:(nullable NSString *)title
-    author:(nullable NSString *)author {
-  Book* pigeonResult = [[Book alloc] init];
+    text:(nullable NSString *)text {
+  Message* pigeonResult = [[Message alloc] init];
   pigeonResult.title = title;
-  pigeonResult.author = author;
+  pigeonResult.text = text;
   return pigeonResult;
 }
-+ (Book *)fromList:(NSArray *)list {
-  Book *pigeonResult = [[Book alloc] init];
++ (Message *)fromList:(NSArray *)list {
+  Message *pigeonResult = [[Message alloc] init];
   pigeonResult.title = GetNullableObjectAtIndex(list, 0);
-  pigeonResult.author = GetNullableObjectAtIndex(list, 1);
+  pigeonResult.text = GetNullableObjectAtIndex(list, 1);
   return pigeonResult;
 }
-+ (nullable Book *)nullableFromList:(NSArray *)list {
-  return (list) ? [Book fromList:list] : nil;
++ (nullable Message *)nullableFromList:(NSArray *)list {
+  return (list) ? [Message fromList:list] : nil;
 }
 - (NSArray *)toList {
   return @[
     (self.title ?: [NSNull null]),
-    (self.author ?: [NSNull null]),
+    (self.text ?: [NSNull null]),
   ];
 }
 @end
 
-@interface BookApiCodecReader : FlutterStandardReader
+@interface ShadowflightApiCodecReader : FlutterStandardReader
 @end
-@implementation BookApiCodecReader
+@implementation ShadowflightApiCodecReader
 - (nullable id)readValueOfType:(UInt8)type {
   switch (type) {
     case 128: 
-      return [Book fromList:[self readValue]];
+      return [Message fromList:[self readValue]];
     default:
       return [super readValueOfType:type];
   }
 }
 @end
 
-@interface BookApiCodecWriter : FlutterStandardWriter
+@interface ShadowflightApiCodecWriter : FlutterStandardWriter
 @end
-@implementation BookApiCodecWriter
+@implementation ShadowflightApiCodecWriter
 - (void)writeValue:(id)value {
-  if ([value isKindOfClass:[Book class]]) {
+  if ([value isKindOfClass:[Message class]]) {
     [self writeByte:128];
     [self writeValue:[value toList]];
   } else {
@@ -78,41 +78,41 @@ static id GetNullableObjectAtIndex(NSArray *array, NSInteger key) {
 }
 @end
 
-@interface BookApiCodecReaderWriter : FlutterStandardReaderWriter
+@interface ShadowflightApiCodecReaderWriter : FlutterStandardReaderWriter
 @end
-@implementation BookApiCodecReaderWriter
+@implementation ShadowflightApiCodecReaderWriter
 - (FlutterStandardWriter *)writerWithData:(NSMutableData *)data {
-  return [[BookApiCodecWriter alloc] initWithData:data];
+  return [[ShadowflightApiCodecWriter alloc] initWithData:data];
 }
 - (FlutterStandardReader *)readerWithData:(NSData *)data {
-  return [[BookApiCodecReader alloc] initWithData:data];
+  return [[ShadowflightApiCodecReader alloc] initWithData:data];
 }
 @end
 
-NSObject<FlutterMessageCodec> *BookApiGetCodec(void) {
+NSObject<FlutterMessageCodec> *ShadowflightApiGetCodec(void) {
   static FlutterStandardMessageCodec *sSharedObject = nil;
   static dispatch_once_t sPred = 0;
   dispatch_once(&sPred, ^{
-    BookApiCodecReaderWriter *readerWriter = [[BookApiCodecReaderWriter alloc] init];
+    ShadowflightApiCodecReaderWriter *readerWriter = [[ShadowflightApiCodecReaderWriter alloc] init];
     sSharedObject = [FlutterStandardMessageCodec codecWithReaderWriter:readerWriter];
   });
   return sSharedObject;
 }
 
-void BookApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<BookApi> *api) {
+void ShadowflightApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<ShadowflightApi> *api) {
   {
     FlutterBasicMessageChannel *channel =
       [[FlutterBasicMessageChannel alloc]
-        initWithName:@"dev.flutter.pigeon.BookApi.search"
+        initWithName:@"dev.flutter.pigeon.ShadowflightApi.replyBackTest"
         binaryMessenger:binaryMessenger
-        codec:BookApiGetCodec()];
+        codec:ShadowflightApiGetCodec()];
     if (api) {
-      NSCAssert([api respondsToSelector:@selector(searchKeyword:error:)], @"BookApi api (%@) doesn't respond to @selector(searchKeyword:error:)", api);
+      NSCAssert([api respondsToSelector:@selector(replyBackTestText:error:)], @"ShadowflightApi api (%@) doesn't respond to @selector(replyBackTestText:error:)", api);
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         NSArray *args = message;
-        NSString *arg_keyword = GetNullableObjectAtIndex(args, 0);
+        NSString *arg_text = GetNullableObjectAtIndex(args, 0);
         FlutterError *error;
-        NSArray<Book *> *output = [api searchKeyword:arg_keyword error:&error];
+        Message *output = [api replyBackTestText:arg_text error:&error];
         callback(wrapResult(output, error));
       }];
     } else {
@@ -122,16 +122,16 @@ void BookApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<BookApi> 
   {
     FlutterBasicMessageChannel *channel =
       [[FlutterBasicMessageChannel alloc]
-        initWithName:@"dev.flutter.pigeon.BookApi.openShadowflightUI"
+        initWithName:@"dev.flutter.pigeon.ShadowflightApi.openShadowflightSDK"
         binaryMessenger:binaryMessenger
-        codec:BookApiGetCodec()];
+        codec:ShadowflightApiGetCodec()];
     if (api) {
-      NSCAssert([api respondsToSelector:@selector(openShadowflightUIUserId:error:)], @"BookApi api (%@) doesn't respond to @selector(openShadowflightUIUserId:error:)", api);
+      NSCAssert([api respondsToSelector:@selector(openShadowflightSDKUserId:error:)], @"ShadowflightApi api (%@) doesn't respond to @selector(openShadowflightSDKUserId:error:)", api);
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         NSArray *args = message;
         NSString *arg_userId = GetNullableObjectAtIndex(args, 0);
         FlutterError *error;
-        [api openShadowflightUIUserId:arg_userId error:&error];
+        [api openShadowflightSDKUserId:arg_userId error:&error];
         callback(wrapResult(nil, error));
       }];
     } else {

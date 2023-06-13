@@ -44,33 +44,33 @@ class FlutterError (
 ) : Throwable()
 
 /** Generated class from Pigeon that represents data sent in messages. */
-data class Book (
+data class Message (
   val title: String? = null,
-  val author: String? = null
+  val text: String? = null
 
 ) {
   companion object {
     @Suppress("UNCHECKED_CAST")
-    fun fromList(list: List<Any?>): Book {
+    fun fromList(list: List<Any?>): Message {
       val title = list[0] as String?
-      val author = list[1] as String?
-      return Book(title, author)
+      val text = list[1] as String?
+      return Message(title, text)
     }
   }
   fun toList(): List<Any?> {
     return listOf<Any?>(
       title,
-      author,
+      text,
     )
   }
 }
 @Suppress("UNCHECKED_CAST")
-private object BookApiCodec : StandardMessageCodec() {
+private object ShadowflightApiCodec : StandardMessageCodec() {
   override fun readValueOfType(type: Byte, buffer: ByteBuffer): Any? {
     return when (type) {
       128.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
-          Book.fromList(it)
+          Message.fromList(it)
         }
       }
       else -> super.readValueOfType(type, buffer)
@@ -78,7 +78,7 @@ private object BookApiCodec : StandardMessageCodec() {
   }
   override fun writeValue(stream: ByteArrayOutputStream, value: Any?)   {
     when (value) {
-      is Book -> {
+      is Message -> {
         stream.write(128)
         writeValue(stream, value.toList())
       }
@@ -88,27 +88,27 @@ private object BookApiCodec : StandardMessageCodec() {
 }
 
 /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
-interface BookApi {
-  fun search(keyword: String): List<Book>
-  fun openShadowflightUI(userId: String)
+interface ShadowflightApi {
+  fun replyBackTest(text: String): Message
+  fun openShadowflightSDK(userId: String)
 
   companion object {
-    /** The codec used by BookApi. */
+    /** The codec used by ShadowflightApi. */
     val codec: MessageCodec<Any?> by lazy {
-      BookApiCodec
+      ShadowflightApiCodec
     }
-    /** Sets up an instance of `BookApi` to handle messages through the `binaryMessenger`. */
+    /** Sets up an instance of `ShadowflightApi` to handle messages through the `binaryMessenger`. */
     @Suppress("UNCHECKED_CAST")
-    fun setUp(binaryMessenger: BinaryMessenger, api: BookApi?) {
+    fun setUp(binaryMessenger: BinaryMessenger, api: ShadowflightApi?) {
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.BookApi.search", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.replyBackTest", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
-            val keywordArg = args[0] as String
+            val textArg = args[0] as String
             var wrapped: List<Any?>
             try {
-              wrapped = listOf<Any?>(api.search(keywordArg))
+              wrapped = listOf<Any?>(api.replyBackTest(textArg))
             } catch (exception: Throwable) {
               wrapped = wrapError(exception)
             }
@@ -119,14 +119,14 @@ interface BookApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.BookApi.openShadowflightUI", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.openShadowflightSDK", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
             val userIdArg = args[0] as String
             var wrapped: List<Any?>
             try {
-              api.openShadowflightUI(userIdArg)
+              api.openShadowflightSDK(userIdArg)
               wrapped = listOf<Any?>(null)
             } catch (exception: Throwable) {
               wrapped = wrapError(exception)

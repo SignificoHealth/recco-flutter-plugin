@@ -35,40 +35,40 @@ private func nilOrValue<T>(_ value: Any?) -> T? {
 }
 
 /// Generated class from Pigeon that represents data sent in messages.
-struct Book {
+struct Message {
   var title: String? = nil
-  var author: String? = nil
+  var text: String? = nil
 
-  static func fromList(_ list: [Any?]) -> Book? {
+  static func fromList(_ list: [Any?]) -> Message? {
     let title: String? = nilOrValue(list[0])
-    let author: String? = nilOrValue(list[1])
+    let text: String? = nilOrValue(list[1])
 
-    return Book(
+    return Message(
       title: title,
-      author: author
+      text: text
     )
   }
   func toList() -> [Any?] {
     return [
       title,
-      author,
+      text,
     ]
   }
 }
-private class BookApiCodecReader: FlutterStandardReader {
+private class ShadowflightApiCodecReader: FlutterStandardReader {
   override func readValue(ofType type: UInt8) -> Any? {
     switch type {
       case 128:
-        return Book.fromList(self.readValue() as! [Any?])
+        return Message.fromList(self.readValue() as! [Any?])
       default:
         return super.readValue(ofType: type)
     }
   }
 }
 
-private class BookApiCodecWriter: FlutterStandardWriter {
+private class ShadowflightApiCodecWriter: FlutterStandardWriter {
   override func writeValue(_ value: Any) {
-    if let value = value as? Book {
+    if let value = value as? Message {
       super.writeByte(128)
       super.writeValue(value.toList())
     } else {
@@ -77,61 +77,61 @@ private class BookApiCodecWriter: FlutterStandardWriter {
   }
 }
 
-private class BookApiCodecReaderWriter: FlutterStandardReaderWriter {
+private class ShadowflightApiCodecReaderWriter: FlutterStandardReaderWriter {
   override func reader(with data: Data) -> FlutterStandardReader {
-    return BookApiCodecReader(data: data)
+    return ShadowflightApiCodecReader(data: data)
   }
 
   override func writer(with data: NSMutableData) -> FlutterStandardWriter {
-    return BookApiCodecWriter(data: data)
+    return ShadowflightApiCodecWriter(data: data)
   }
 }
 
-class BookApiCodec: FlutterStandardMessageCodec {
-  static let shared = BookApiCodec(readerWriter: BookApiCodecReaderWriter())
+class ShadowflightApiCodec: FlutterStandardMessageCodec {
+  static let shared = ShadowflightApiCodec(readerWriter: ShadowflightApiCodecReaderWriter())
 }
 
 /// Generated protocol from Pigeon that represents a handler of messages from Flutter.
-protocol BookApi {
-  func search(keyword: String) throws -> [Book]
-  func openShadowflightUI(userId: String) throws
+protocol ShadowflightApi {
+  func replyBackTest(text: String) throws -> Message
+  func openShadowflightSDK(userId: String) throws
 }
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
-class BookApiSetup {
-  /// The codec used by BookApi.
-  static var codec: FlutterStandardMessageCodec { BookApiCodec.shared }
-  /// Sets up an instance of `BookApi` to handle messages through the `binaryMessenger`.
-  static func setUp(binaryMessenger: FlutterBinaryMessenger, api: BookApi?) {
-    let searchChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.BookApi.search", binaryMessenger: binaryMessenger, codec: codec)
+class ShadowflightApiSetup {
+  /// The codec used by ShadowflightApi.
+  static var codec: FlutterStandardMessageCodec { ShadowflightApiCodec.shared }
+  /// Sets up an instance of `ShadowflightApi` to handle messages through the `binaryMessenger`.
+  static func setUp(binaryMessenger: FlutterBinaryMessenger, api: ShadowflightApi?) {
+    let replyBackTestChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.ShadowflightApi.replyBackTest", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
-      searchChannel.setMessageHandler { message, reply in
+      replyBackTestChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
-        let keywordArg = args[0] as! String
+        let textArg = args[0] as! String
         do {
-          let result = try api.search(keyword: keywordArg)
+          let result = try api.replyBackTest(text: textArg)
           reply(wrapResult(result))
         } catch {
           reply(wrapError(error))
         }
       }
     } else {
-      searchChannel.setMessageHandler(nil)
+      replyBackTestChannel.setMessageHandler(nil)
     }
-    let openShadowflightUIChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.BookApi.openShadowflightUI", binaryMessenger: binaryMessenger, codec: codec)
+    let openShadowflightSDKChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.ShadowflightApi.openShadowflightSDK", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
-      openShadowflightUIChannel.setMessageHandler { message, reply in
+      openShadowflightSDKChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
         let userIdArg = args[0] as! String
         do {
-          try api.openShadowflightUI(userId: userIdArg)
+          try api.openShadowflightSDK(userId: userIdArg)
           reply(wrapResult(nil))
         } catch {
           reply(wrapError(error))
         }
       }
     } else {
-      openShadowflightUIChannel.setMessageHandler(nil)
+      openShadowflightSDKChannel.setMessageHandler(nil)
     }
   }
 }

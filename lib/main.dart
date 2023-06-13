@@ -51,8 +51,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _controller = TextEditingController(text: "");
-  final BookApi _api = BookApi();
-  final List<Book?> _apiResult = List.empty(growable: true);
+  final ShadowflightApi _shadowflightApi = ShadowflightApi();
+  Message _message = Message(title: "", text: "");
   String _userId = "";
 
   @override
@@ -77,13 +77,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     _userId = text.trim();
                   });
 
-                  _api.search(text).then((value) {
-                    final response =
-                    value.map((e) => "${e!.title}: ${e.author}").join(", ");
-                    debugPrint("typed=$text, result=$response");
+                  _shadowflightApi.replyBackTest(text).then((value) {
+                    final response = "${value.title}: ${value.text}";
+                    debugPrint("result=$response");
                     setState(() {
-                      _apiResult.clear();
-                      _apiResult.addAll(value);
+                      _message = value;
                     });
                   }, onError: (error, stacktrace) {
                     debugPrint(error);
@@ -99,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
                 child: Text(
-                  _apiResult.map((e) => "${e!.title}: ${e.author}").join(", "),
+                  "${_message.title}: ${_message.text}",
                   style: Theme.of(context).textTheme.bodySmall,
                   textAlign: TextAlign.start,
                 ),
@@ -129,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _openShadowflightUI() async {
     try {
-      await _api.openShadowflightUI(_userId);
+      await _shadowflightApi.openShadowflightSDK(_userId);
     } on PlatformException catch (e) {
       debugPrint("Error: '${e.message}'.");
     }

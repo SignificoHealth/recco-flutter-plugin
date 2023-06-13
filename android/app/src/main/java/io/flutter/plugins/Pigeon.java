@@ -58,7 +58,7 @@ public class Pigeon {
   }
 
   /** Generated class from Pigeon that represents data sent in messages. */
-  public static final class Book {
+  public static final class Message {
     private @Nullable String title;
 
     public @Nullable String getTitle() {
@@ -69,14 +69,14 @@ public class Pigeon {
       this.title = setterArg;
     }
 
-    private @Nullable String author;
+    private @Nullable String text;
 
-    public @Nullable String getAuthor() {
-      return author;
+    public @Nullable String getText() {
+      return text;
     }
 
-    public void setAuthor(@Nullable String setterArg) {
-      this.author = setterArg;
+    public void setText(@Nullable String setterArg) {
+      this.text = setterArg;
     }
 
     public static final class Builder {
@@ -88,17 +88,17 @@ public class Pigeon {
         return this;
       }
 
-      private @Nullable String author;
+      private @Nullable String text;
 
-      public @NonNull Builder setAuthor(@Nullable String setterArg) {
-        this.author = setterArg;
+      public @NonNull Builder setText(@Nullable String setterArg) {
+        this.text = setterArg;
         return this;
       }
 
-      public @NonNull Book build() {
-        Book pigeonReturn = new Book();
+      public @NonNull Message build() {
+        Message pigeonReturn = new Message();
         pigeonReturn.setTitle(title);
-        pigeonReturn.setAuthor(author);
+        pigeonReturn.setText(text);
         return pigeonReturn;
       }
     }
@@ -107,30 +107,30 @@ public class Pigeon {
     ArrayList<Object> toList() {
       ArrayList<Object> toListResult = new ArrayList<Object>(2);
       toListResult.add(title);
-      toListResult.add(author);
+      toListResult.add(text);
       return toListResult;
     }
 
-    static @NonNull Book fromList(@NonNull ArrayList<Object> list) {
-      Book pigeonResult = new Book();
+    static @NonNull Message fromList(@NonNull ArrayList<Object> list) {
+      Message pigeonResult = new Message();
       Object title = list.get(0);
       pigeonResult.setTitle((String) title);
-      Object author = list.get(1);
-      pigeonResult.setAuthor((String) author);
+      Object text = list.get(1);
+      pigeonResult.setText((String) text);
       return pigeonResult;
     }
   }
 
-  private static class BookApiCodec extends StandardMessageCodec {
-    public static final BookApiCodec INSTANCE = new BookApiCodec();
+  private static class ShadowflightApiCodec extends StandardMessageCodec {
+    public static final ShadowflightApiCodec INSTANCE = new ShadowflightApiCodec();
 
-    private BookApiCodec() {}
+    private ShadowflightApiCodec() {}
 
     @Override
     protected Object readValueOfType(byte type, @NonNull ByteBuffer buffer) {
       switch (type) {
         case (byte) 128:
-          return Book.fromList((ArrayList<Object>) readValue(buffer));
+          return Message.fromList((ArrayList<Object>) readValue(buffer));
         default:
           return super.readValueOfType(type, buffer);
       }
@@ -138,9 +138,9 @@ public class Pigeon {
 
     @Override
     protected void writeValue(@NonNull ByteArrayOutputStream stream, Object value) {
-      if (value instanceof Book) {
+      if (value instanceof Message) {
         stream.write(128);
-        writeValue(stream, ((Book) value).toList());
+        writeValue(stream, ((Message) value).toList());
       } else {
         super.writeValue(stream, value);
       }
@@ -148,31 +148,31 @@ public class Pigeon {
   }
 
   /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
-  public interface BookApi {
+  public interface ShadowflightApi {
 
     @NonNull 
-    List<Book> search(@NonNull String keyword);
+    Message replyBackTest(@NonNull String text);
 
-    void openShadowflightUI(@NonNull String userId);
+    void openShadowflightSDK(@NonNull String userId);
 
-    /** The codec used by BookApi. */
+    /** The codec used by ShadowflightApi. */
     static @NonNull MessageCodec<Object> getCodec() {
-      return BookApiCodec.INSTANCE;
+      return ShadowflightApiCodec.INSTANCE;
     }
-    /**Sets up an instance of `BookApi` to handle messages through the `binaryMessenger`. */
-    static void setup(@NonNull BinaryMessenger binaryMessenger, @Nullable BookApi api) {
+    /**Sets up an instance of `ShadowflightApi` to handle messages through the `binaryMessenger`. */
+    static void setup(@NonNull BinaryMessenger binaryMessenger, @Nullable ShadowflightApi api) {
       {
         BasicMessageChannel<Object> channel =
             new BasicMessageChannel<>(
-                binaryMessenger, "dev.flutter.pigeon.BookApi.search", getCodec());
+                binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.replyBackTest", getCodec());
         if (api != null) {
           channel.setMessageHandler(
               (message, reply) -> {
                 ArrayList<Object> wrapped = new ArrayList<Object>();
                 ArrayList<Object> args = (ArrayList<Object>) message;
-                String keywordArg = (String) args.get(0);
+                String textArg = (String) args.get(0);
                 try {
-                  List<Book> output = api.search(keywordArg);
+                  Message output = api.replyBackTest(textArg);
                   wrapped.add(0, output);
                 }
  catch (Throwable exception) {
@@ -188,7 +188,7 @@ public class Pigeon {
       {
         BasicMessageChannel<Object> channel =
             new BasicMessageChannel<>(
-                binaryMessenger, "dev.flutter.pigeon.BookApi.openShadowflightUI", getCodec());
+                binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.openShadowflightSDK", getCodec());
         if (api != null) {
           channel.setMessageHandler(
               (message, reply) -> {
@@ -196,7 +196,7 @@ public class Pigeon {
                 ArrayList<Object> args = (ArrayList<Object>) message;
                 String userIdArg = (String) args.get(0);
                 try {
-                  api.openShadowflightUI(userIdArg);
+                  api.openShadowflightSDK(userIdArg);
                   wrapped.add(0, null);
                 }
  catch (Throwable exception) {
