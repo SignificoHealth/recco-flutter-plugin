@@ -25,6 +25,7 @@ NSObject<FlutterMessageCodec> *BookApiGetCodec(void);
 @protocol BookApi
 /// @return `nil` only when `error != nil`.
 - (nullable NSArray<Book *> *)searchKeyword:(NSString *)keyword error:(FlutterError *_Nullable *_Nonnull)error;
+- (void)openShadowflightUIUserId:(NSString *)userId error:(FlutterError *_Nullable *_Nonnull)error;
 @end
 
 extern void BookApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<BookApi> *_Nullable api);

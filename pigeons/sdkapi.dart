@@ -8,4 +8,5 @@ class Book {
 @HostApi()
 abstract class BookApi {
   List<Book> search(String keyword);
+  void openShadowflightUI(String userId);
 }

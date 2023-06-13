@@ -119,4 +119,23 @@ void BookApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<BookApi> 
       [channel setMessageHandler:nil];
     }
   }
+  {
+    FlutterBasicMessageChannel *channel =
+      [[FlutterBasicMessageChannel alloc]
+        initWithName:@"dev.flutter.pigeon.BookApi.openShadowflightUI"
+        binaryMessenger:binaryMessenger
+        codec:BookApiGetCodec()];
+    if (api) {
+      NSCAssert([api respondsToSelector:@selector(openShadowflightUIUserId:error:)], @"BookApi api (%@) doesn't respond to @selector(openShadowflightUIUserId:error:)", api);
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        NSArray *args = message;
+        NSString *arg_userId = GetNullableObjectAtIndex(args, 0);
+        FlutterError *error;
+        [api openShadowflightUIUserId:arg_userId error:&error];
+        callback(wrapResult(nil, error));
+      }];
+    } else {
+      [channel setMessageHandler:nil];
+    }
+  }
 }

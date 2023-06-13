@@ -153,6 +153,8 @@ public class Pigeon {
     @NonNull 
     List<Book> search(@NonNull String keyword);
 
+    void openShadowflightUI(@NonNull String userId);
+
     /** The codec used by BookApi. */
     static @NonNull MessageCodec<Object> getCodec() {
       return BookApiCodec.INSTANCE;
@@ -172,6 +174,30 @@ public class Pigeon {
                 try {
                   List<Book> output = api.search(keywordArg);
                   wrapped.add(0, output);
+                }
+ catch (Throwable exception) {
+                  ArrayList<Object> wrappedError = wrapError(exception);
+                  wrapped = wrappedError;
+                }
+                reply.reply(wrapped);
+              });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(
+                binaryMessenger, "dev.flutter.pigeon.BookApi.openShadowflightUI", getCodec());
+        if (api != null) {
+          channel.setMessageHandler(
+              (message, reply) -> {
+                ArrayList<Object> wrapped = new ArrayList<Object>();
+                ArrayList<Object> args = (ArrayList<Object>) message;
+                String userIdArg = (String) args.get(0);
+                try {
+                  api.openShadowflightUI(userIdArg);
+                  wrapped.add(0, null);
                 }
  catch (Throwable exception) {
                   ArrayList<Object> wrappedError = wrapError(exception);

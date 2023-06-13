@@ -94,6 +94,7 @@ class BookApiCodec: FlutterStandardMessageCodec {
 /// Generated protocol from Pigeon that represents a handler of messages from Flutter.
 protocol BookApi {
   func search(keyword: String) throws -> [Book]
+  func openShadowflightUI(userId: String) throws
 }
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
@@ -116,6 +117,21 @@ class BookApiSetup {
       }
     } else {
       searchChannel.setMessageHandler(nil)
+    }
+    let openShadowflightUIChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.BookApi.openShadowflightUI", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      openShadowflightUIChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let userIdArg = args[0] as! String
+        do {
+          try api.openShadowflightUI(userId: userIdArg)
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      openShadowflightUIChannel.setMessageHandler(nil)
     }
   }
 }

@@ -90,6 +90,7 @@ private object BookApiCodec : StandardMessageCodec() {
 /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
 interface BookApi {
   fun search(keyword: String): List<Book>
+  fun openShadowflightUI(userId: String)
 
   companion object {
     /** The codec used by BookApi. */
@@ -108,6 +109,25 @@ interface BookApi {
             var wrapped: List<Any?>
             try {
               wrapped = listOf<Any?>(api.search(keywordArg))
+            } catch (exception: Throwable) {
+              wrapped = wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.BookApi.openShadowflightUI", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val userIdArg = args[0] as String
+            var wrapped: List<Any?>
+            try {
+              api.openShadowflightUI(userIdArg)
+              wrapped = listOf<Any?>(null)
             } catch (exception: Throwable) {
               wrapped = wrapError(exception)
             }
