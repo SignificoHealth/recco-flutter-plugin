@@ -1,6 +1,7 @@
 package com.example.flutter_showcase
 
 import androidx.annotation.NonNull
+import com.shadowflight.ui.UIApi
 import dev.flutter.pigeon.Book
 import dev.flutter.pigeon.BookApi
 import io.flutter.embedding.android.FlutterActivity
@@ -21,6 +22,9 @@ class MainActivity : FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
 
         val api = PigeonApiImplementation()
-        BookApi.setUp(flutterEngine.dartExecutor.binaryMessenger, api);
+        BookApi.setUp(flutterEngine.dartExecutor.binaryMessenger, api)
+
+        UIApi.login(userId = "1")
+        UIApi.navigateToFeed(this)
     }
 }
