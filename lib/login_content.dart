@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 
-class LoginContent extends StatelessWidget {
-  final String text;
-  final Function(String text) onTextChanged;
+
+class LoginContent extends StatefulWidget {
+  final TextEditingController textController;
   final VoidCallback onLoginClick;
 
-  LoginContent(
-      {required this.text,
-      required this.onTextChanged,
-      required this.onLoginClick});
+  const LoginContent(
+      {super.key, required this.textController, required this.onLoginClick});
 
   @override
+  State<LoginContent> createState() => _LoginContent();
+}
+
+class _LoginContent extends State<LoginContent> {
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController controller = TextEditingController(text: text);
-    controller.selection = TextSelection.collapsed(offset: controller.text.length);
+    final textController = widget.textController;
+    bool disableLoginCta = textController.text.isEmpty;
+    textController.selection =
+        TextSelection.collapsed(offset: textController.text.length);
 
     return Center(
       child: Column(
@@ -24,17 +29,19 @@ class LoginContent extends StatelessWidget {
             child: TextField(
               decoration: const InputDecoration(labelText: 'User ID'),
               maxLength: 15,
-              controller: controller,
+              controller: textController,
               textInputAction: TextInputAction.done,
               onChanged: (value) {
-                controller.text = value.trim();
-                controller.selection =
-                    TextSelection.collapsed(offset: controller.text.length);
-                onTextChanged(controller.text);
+                setState(() {
+                  disableLoginCta = value.isEmpty;
+                });
+                textController.text = value.trim();
+                textController.selection =
+                    TextSelection.collapsed(offset: textController.text.length);
               },
               onTap: () {
-                controller.selection =
-                    TextSelection.collapsed(offset: controller.text.length);
+                textController.selection =
+                    TextSelection.collapsed(offset: textController.text.length);
               },
               onTapOutside: (event) {
                 FocusScope.of(context).unfocus();
@@ -47,11 +54,11 @@ class LoginContent extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
               child: ElevatedButton(
-                onPressed: (text.isEmpty)
+                onPressed: (disableLoginCta)
                     ? null
                     : () {
                         {
-                          onLoginClick();
+                          widget.onLoginClick();
                         }
                       },
                 child: const Text('Login'),

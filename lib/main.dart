@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_showcase/login_content.dart';
 import 'package:flutter_showcase/pigeon.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'logout_content.dart';
 
 enum ScreenState { LOGIN_FORM, LOGOUT }
+
+const String USER_ID_PREF = "userIdKey";
 
 void main() {
   runApp(const MyApp());
@@ -38,69 +41,108 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final ShadowflightApi _shadowflightApi = ShadowflightApi();
-  String _userId = "";
-  ScreenState _state = ScreenState.LOGIN_FORM;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late ScreenState _state;
+  late Future<String> _userId;
+  final TextEditingController _textUserIdController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _userId = _prefs.then((SharedPreferences prefs) {
+      final String userId = prefs.getString(USER_ID_PREF) ?? "";
+      _updateScreenState(userId);
+      return userId;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
-        children: [
-          Visibility(
-              visible: _state == ScreenState.LOGIN_FORM,
-              child: LoginContent(
-                text: _userId,
-                onTextChanged: (text) {
-                  setState(() {
-                    _userId = text.trim();
-                  });
-                },
-                onLoginClick: () {
-                  _loginShadowflightSDK(_userId, () {
-                    setState(() {
-                      _state = ScreenState.LOGOUT;
-                    });
-                  });
-                },
-              )),
-          Visibility(
-              visible: _state == ScreenState.LOGOUT,
-              child: LogoutContent(
-                text: _userId,
-                onOpenSdkClick: () => _openShadowflightUI(),
-                onLogoutClick: () {
-                  setState(() {
-                    _userId = "";
-                    _logoutShadowflightSDK(() {
-                      setState(() {
-                        _state = ScreenState.LOGIN_FORM;
-                      });
-                    });
-                  });
-                },
-              )),
-        ],
-      ),
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: FutureBuilder<String>(
+            future: _userId,
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                case ConnectionState.waiting:
+                  return const CircularProgressIndicator();
+                case ConnectionState.active:
+                case ConnectionState.done:
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    final userId = snapshot.data!;
+                    return _successContent(userId);
+                  }
+              }
+            }));
+  }
+
+  Widget _successContent(String userId) {
+    return Column(
+      children: [
+        Visibility(
+            visible: _state == ScreenState.LOGIN_FORM,
+            child: LoginContent(
+              textController: _textUserIdController,
+              onLoginClick: () {
+                _loginShadowflightSDK(_textUserIdController.text).then((value) {
+                  return _updateUser(value);
+                }).then((value) {
+                  _updateScreenState(value);
+                });
+              },
+            )),
+        Visibility(
+            visible: _state == ScreenState.LOGOUT,
+            child: LogoutContent(
+              text: userId,
+              onOpenSdkClick: () => _openShadowflightUI(),
+              onLogoutClick: () {
+                _logoutShadowflightSDK().then((value) {
+                  return _updateUser("");
+                }).then((value) {
+                  _updateScreenState(value);
+                });
+              },
+            )),
+      ],
     );
   }
 
-  Future<void> _loginShadowflightSDK(
-      String userId, VoidCallback onSuccess) async {
+  Future<String> _updateUser(String userId) async {
+    final SharedPreferences prefs = await _prefs;
+    _userId = prefs.setString(USER_ID_PREF, userId).then((bool success) {
+      return userId;
+    });
+    return _userId;
+  }
+
+  void _updateScreenState(String userId) {
+    setState(() {
+      if (userId.isEmpty) {
+        _state = ScreenState.LOGIN_FORM;
+      } else {
+        _state = ScreenState.LOGOUT;
+      }
+    });
+  }
+
+  Future<String> _loginShadowflightSDK(String userId) async {
     try {
       await _shadowflightApi.login(userId);
-      onSuccess();
     } on PlatformException catch (e) {
       debugPrint("Error: '${e.message}'.");
     }
+    return userId;
   }
 
-  Future<void> _logoutShadowflightSDK(VoidCallback onSuccess) async {
+  Future<void> _logoutShadowflightSDK() async {
     try {
       await _shadowflightApi.logout();
-      onSuccess();
     } on PlatformException catch (e) {
       debugPrint("Error: '${e.message}'.");
     }

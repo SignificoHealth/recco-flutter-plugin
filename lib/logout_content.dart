@@ -5,8 +5,9 @@ class LogoutContent extends StatelessWidget {
   final VoidCallback onOpenSdkClick;
   final VoidCallback onLogoutClick;
 
-  LogoutContent(
-      {required this.text,
+  const LogoutContent(
+      {super.key,
+      required this.text,
       required this.onOpenSdkClick,
       required this.onLogoutClick});
 
@@ -19,8 +20,7 @@ class LogoutContent extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: Padding(
-              padding:
-                  const EdgeInsets.fromLTRB(24, 24, 24, 0),
+              padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
               child: Text(
                 "Current userId: $text",
                 style: Theme.of(context).textTheme.bodySmall,
