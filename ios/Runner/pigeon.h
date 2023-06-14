@@ -10,22 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class Message;
-
-@interface Message : NSObject
-+ (instancetype)makeWithTitle:(nullable NSString *)title
-    text:(nullable NSString *)text;
-@property(nonatomic, copy, nullable) NSString * title;
-@property(nonatomic, copy, nullable) NSString * text;
-@end
 
 /// The codec used by ShadowflightApi.
 NSObject<FlutterMessageCodec> *ShadowflightApiGetCodec(void);
 
 @protocol ShadowflightApi
-/// @return `nil` only when `error != nil`.
-- (nullable Message *)replyBackTestText:(NSString *)text error:(FlutterError *_Nullable *_Nonnull)error;
-- (void)openShadowflightSDKUserId:(NSString *)userId error:(FlutterError *_Nullable *_Nonnull)error;
+- (void)loginUserId:(NSString *)userId error:(FlutterError *_Nullable *_Nonnull)error;
+- (void)logoutWithError:(FlutterError *_Nullable *_Nonnull)error;
+- (void)navigateToDashboardWithError:(FlutterError *_Nullable *_Nonnull)error;
 @end
 
 extern void ShadowflightApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<ShadowflightApi> *_Nullable api);
