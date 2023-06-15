@@ -8,55 +8,6 @@ import 'dart:typed_data' show Float64List, Int32List, Int64List, Uint8List;
 import 'package:flutter/foundation.dart' show ReadBuffer, WriteBuffer;
 import 'package:flutter/services.dart';
 
-class Message {
-  Message({
-    this.title,
-    this.text,
-  });
-
-  String? title;
-
-  String? text;
-
-  Object encode() {
-    return <Object?>[
-      title,
-      text,
-    ];
-  }
-
-  static Message decode(Object result) {
-    result as List<Object?>;
-    return Message(
-      title: result[0] as String?,
-      text: result[1] as String?,
-    );
-  }
-}
-
-class _ShadowflightApiCodec extends StandardMessageCodec {
-  const _ShadowflightApiCodec();
-  @override
-  void writeValue(WriteBuffer buffer, Object? value) {
-    if (value is Message) {
-      buffer.putUint8(128);
-      writeValue(buffer, value.encode());
-    } else {
-      super.writeValue(buffer, value);
-    }
-  }
-
-  @override
-  Object? readValueOfType(int type, ReadBuffer buffer) {
-    switch (type) {
-      case 128: 
-        return Message.decode(readValue(buffer)!);
-      default:
-        return super.readValueOfType(type, buffer);
-    }
-  }
-}
-
 class ShadowflightApi {
   /// Constructor for [ShadowflightApi].  The [binaryMessenger] named argument is
   /// available for dependency injection.  If it is left null, the default
@@ -65,14 +16,14 @@ class ShadowflightApi {
       : _binaryMessenger = binaryMessenger;
   final BinaryMessenger? _binaryMessenger;
 
-  static const MessageCodec<Object?> codec = _ShadowflightApiCodec();
+  static const MessageCodec<Object?> codec = StandardMessageCodec();
 
-  Future<Message> replyBackTest(String arg_text) async {
+  Future<void> login(String arg_userId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.ShadowflightApi.replyBackTest', codec,
+        'dev.flutter.pigeon.ShadowflightApi.login', codec,
         binaryMessenger: _binaryMessenger);
     final List<Object?>? replyList =
-        await channel.send(<Object?>[arg_text]) as List<Object?>?;
+        await channel.send(<Object?>[arg_userId]) as List<Object?>?;
     if (replyList == null) {
       throw PlatformException(
         code: 'channel-error',
@@ -84,22 +35,39 @@ class ShadowflightApi {
         message: replyList[1] as String?,
         details: replyList[2],
       );
-    } else if (replyList[0] == null) {
-      throw PlatformException(
-        code: 'null-error',
-        message: 'Host platform returned null value for non-null return value.',
-      );
     } else {
-      return (replyList[0] as Message?)!;
+      return;
     }
   }
 
-  Future<void> openShadowflightSDK(String arg_userId) async {
+  Future<void> logout() async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.ShadowflightApi.openShadowflightSDK', codec,
+        'dev.flutter.pigeon.ShadowflightApi.logout', codec,
         binaryMessenger: _binaryMessenger);
     final List<Object?>? replyList =
-        await channel.send(<Object?>[arg_userId]) as List<Object?>?;
+        await channel.send(null) as List<Object?>?;
+    if (replyList == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+      );
+    } else if (replyList.length > 1) {
+      throw PlatformException(
+        code: replyList[0]! as String,
+        message: replyList[1] as String?,
+        details: replyList[2],
+      );
+    } else {
+      return;
+    }
+  }
+
+  Future<void> navigateToDashboard() async {
+    final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.ShadowflightApi.navigateToDashboard', codec,
+        binaryMessenger: _binaryMessenger);
+    final List<Object?>? replyList =
+        await channel.send(null) as List<Object?>?;
     if (replyList == null) {
       throw PlatformException(
         code: 'channel-error',

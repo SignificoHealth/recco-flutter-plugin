@@ -42,73 +42,30 @@ class FlutterError (
   override val message: String? = null,
   val details: Any? = null
 ) : Throwable()
-
-/** Generated class from Pigeon that represents data sent in messages. */
-data class Message (
-  val title: String? = null,
-  val text: String? = null
-
-) {
-  companion object {
-    @Suppress("UNCHECKED_CAST")
-    fun fromList(list: List<Any?>): Message {
-      val title = list[0] as String?
-      val text = list[1] as String?
-      return Message(title, text)
-    }
-  }
-  fun toList(): List<Any?> {
-    return listOf<Any?>(
-      title,
-      text,
-    )
-  }
-}
-@Suppress("UNCHECKED_CAST")
-private object ShadowflightApiCodec : StandardMessageCodec() {
-  override fun readValueOfType(type: Byte, buffer: ByteBuffer): Any? {
-    return when (type) {
-      128.toByte() -> {
-        return (readValue(buffer) as? List<Any?>)?.let {
-          Message.fromList(it)
-        }
-      }
-      else -> super.readValueOfType(type, buffer)
-    }
-  }
-  override fun writeValue(stream: ByteArrayOutputStream, value: Any?)   {
-    when (value) {
-      is Message -> {
-        stream.write(128)
-        writeValue(stream, value.toList())
-      }
-      else -> super.writeValue(stream, value)
-    }
-  }
-}
-
 /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
 interface ShadowflightApi {
-  fun replyBackTest(text: String): Message
-  fun openShadowflightSDK(userId: String)
+  fun login(userId: String)
+  fun logout()
+  fun navigateToDashboard()
 
   companion object {
     /** The codec used by ShadowflightApi. */
     val codec: MessageCodec<Any?> by lazy {
-      ShadowflightApiCodec
+      StandardMessageCodec()
     }
     /** Sets up an instance of `ShadowflightApi` to handle messages through the `binaryMessenger`. */
     @Suppress("UNCHECKED_CAST")
     fun setUp(binaryMessenger: BinaryMessenger, api: ShadowflightApi?) {
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.replyBackTest", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.login", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
-            val textArg = args[0] as String
+            val userIdArg = args[0] as String
             var wrapped: List<Any?>
             try {
-              wrapped = listOf<Any?>(api.replyBackTest(textArg))
+              api.login(userIdArg)
+              wrapped = listOf<Any?>(null)
             } catch (exception: Throwable) {
               wrapped = wrapError(exception)
             }
@@ -119,14 +76,29 @@ interface ShadowflightApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.openShadowflightSDK", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.logout", codec)
         if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val userIdArg = args[0] as String
+          channel.setMessageHandler { _, reply ->
             var wrapped: List<Any?>
             try {
-              api.openShadowflightSDK(userIdArg)
+              api.logout()
+              wrapped = listOf<Any?>(null)
+            } catch (exception: Throwable) {
+              wrapped = wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.navigateToDashboard", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            var wrapped: List<Any?>
+            try {
+              api.navigateToDashboard()
               wrapped = listOf<Any?>(null)
             } catch (exception: Throwable) {
               wrapped = wrapError(exception)

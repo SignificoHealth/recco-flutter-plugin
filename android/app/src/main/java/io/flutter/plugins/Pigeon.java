@@ -56,124 +56,34 @@ public class Pigeon {
     }
     return errorList;
   }
-
-  /** Generated class from Pigeon that represents data sent in messages. */
-  public static final class Message {
-    private @Nullable String title;
-
-    public @Nullable String getTitle() {
-      return title;
-    }
-
-    public void setTitle(@Nullable String setterArg) {
-      this.title = setterArg;
-    }
-
-    private @Nullable String text;
-
-    public @Nullable String getText() {
-      return text;
-    }
-
-    public void setText(@Nullable String setterArg) {
-      this.text = setterArg;
-    }
-
-    public static final class Builder {
-
-      private @Nullable String title;
-
-      public @NonNull Builder setTitle(@Nullable String setterArg) {
-        this.title = setterArg;
-        return this;
-      }
-
-      private @Nullable String text;
-
-      public @NonNull Builder setText(@Nullable String setterArg) {
-        this.text = setterArg;
-        return this;
-      }
-
-      public @NonNull Message build() {
-        Message pigeonReturn = new Message();
-        pigeonReturn.setTitle(title);
-        pigeonReturn.setText(text);
-        return pigeonReturn;
-      }
-    }
-
-    @NonNull
-    ArrayList<Object> toList() {
-      ArrayList<Object> toListResult = new ArrayList<Object>(2);
-      toListResult.add(title);
-      toListResult.add(text);
-      return toListResult;
-    }
-
-    static @NonNull Message fromList(@NonNull ArrayList<Object> list) {
-      Message pigeonResult = new Message();
-      Object title = list.get(0);
-      pigeonResult.setTitle((String) title);
-      Object text = list.get(1);
-      pigeonResult.setText((String) text);
-      return pigeonResult;
-    }
-  }
-
-  private static class ShadowflightApiCodec extends StandardMessageCodec {
-    public static final ShadowflightApiCodec INSTANCE = new ShadowflightApiCodec();
-
-    private ShadowflightApiCodec() {}
-
-    @Override
-    protected Object readValueOfType(byte type, @NonNull ByteBuffer buffer) {
-      switch (type) {
-        case (byte) 128:
-          return Message.fromList((ArrayList<Object>) readValue(buffer));
-        default:
-          return super.readValueOfType(type, buffer);
-      }
-    }
-
-    @Override
-    protected void writeValue(@NonNull ByteArrayOutputStream stream, Object value) {
-      if (value instanceof Message) {
-        stream.write(128);
-        writeValue(stream, ((Message) value).toList());
-      } else {
-        super.writeValue(stream, value);
-      }
-    }
-  }
-
   /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
   public interface ShadowflightApi {
 
-    @NonNull 
-    Message replyBackTest(@NonNull String text);
+    void login(@NonNull String userId);
 
-    void openShadowflightSDK(@NonNull String userId);
+    void logout();
+
+    void navigateToDashboard();
 
     /** The codec used by ShadowflightApi. */
     static @NonNull MessageCodec<Object> getCodec() {
-      return ShadowflightApiCodec.INSTANCE;
+      return new StandardMessageCodec();
     }
     /**Sets up an instance of `ShadowflightApi` to handle messages through the `binaryMessenger`. */
     static void setup(@NonNull BinaryMessenger binaryMessenger, @Nullable ShadowflightApi api) {
       {
         BasicMessageChannel<Object> channel =
             new BasicMessageChannel<>(
-                binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.replyBackTest", getCodec());
+                binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.login", getCodec());
         if (api != null) {
           channel.setMessageHandler(
               (message, reply) -> {
                 ArrayList<Object> wrapped = new ArrayList<Object>();
                 ArrayList<Object> args = (ArrayList<Object>) message;
-                String textArg = (String) args.get(0);
+                String userIdArg = (String) args.get(0);
                 try {
-                  Message output = api.replyBackTest(textArg);
-                  wrapped.add(0, output);
+                  api.login(userIdArg);
+                  wrapped.add(0, null);
                 }
  catch (Throwable exception) {
                   ArrayList<Object> wrappedError = wrapError(exception);
@@ -188,15 +98,35 @@ public class Pigeon {
       {
         BasicMessageChannel<Object> channel =
             new BasicMessageChannel<>(
-                binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.openShadowflightSDK", getCodec());
+                binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.logout", getCodec());
         if (api != null) {
           channel.setMessageHandler(
               (message, reply) -> {
                 ArrayList<Object> wrapped = new ArrayList<Object>();
-                ArrayList<Object> args = (ArrayList<Object>) message;
-                String userIdArg = (String) args.get(0);
                 try {
-                  api.openShadowflightSDK(userIdArg);
+                  api.logout();
+                  wrapped.add(0, null);
+                }
+ catch (Throwable exception) {
+                  ArrayList<Object> wrappedError = wrapError(exception);
+                  wrapped = wrappedError;
+                }
+                reply.reply(wrapped);
+              });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(
+                binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.navigateToDashboard", getCodec());
+        if (api != null) {
+          channel.setMessageHandler(
+              (message, reply) -> {
+                ArrayList<Object> wrapped = new ArrayList<Object>();
+                try {
+                  api.navigateToDashboard();
                   wrapped.add(0, null);
                 }
  catch (Throwable exception) {

@@ -14,7 +14,6 @@ class ShowcaseApp : FlutterApplication() {
             sdkConfig = SDKConfig(
                 appName = "Flutter Android Showcase",
                 apiSecret = "YuJi02IHzJDxe-oiqT1QOptnh9mGMnulPPx5C3xoyBSe0dNha-m1qOjG9DopeSspqR9d6-Y",
-                isDebug = false
             ),
             application = this
         )

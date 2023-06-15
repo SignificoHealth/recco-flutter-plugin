@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_showcase/login_content.dart';
 import 'package:flutter_showcase/pigeon.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'logout_content.dart';
+
+enum ScreenState { LOGIN_FORM, LOGOUT }
+
+const String USER_ID_PREF = "userIdKey";
 
 void main() {
   runApp(const MyApp());
@@ -15,15 +23,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Flutter Demo Shadowflight'),
@@ -34,15 +33,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -50,84 +40,117 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final TextEditingController _controller = TextEditingController(text: "");
   final ShadowflightApi _shadowflightApi = ShadowflightApi();
-  Message _message = Message(title: "", text: "");
-  String _userId = "";
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late ScreenState _state;
+  late Future<String> _userId;
+  final TextEditingController _textUserIdController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _userId = _prefs.then((SharedPreferences prefs) {
+      final String userId = prefs.getString(USER_ID_PREF) ?? "";
+      _updateScreenState(userId);
+      return userId;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: TextField(
-                decoration: InputDecoration(labelText: 'User ID'),
-                maxLength: 15,
-                controller: _controller,
-                textInputAction: TextInputAction.done,
-                onChanged: (text) {
-                  setState(() {
-                    _userId = text.trim();
-                  });
-
-                  _shadowflightApi.replyBackTest(text).then((value) {
-                    final response = "${value.title}: ${value.text}";
-                    debugPrint("result=$response");
-                    setState(() {
-                      _message = value;
-                    });
-                  }, onError: (error, stacktrace) {
-                    debugPrint(error);
-                    debugPrintStack(stackTrace: stacktrace);
-                  });
-                },
-                onSubmitted: (text) {
-                },
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-                child: Text(
-                  "${_message.title}: ${_message.text}",
-                  style: Theme.of(context).textTheme.bodySmall,
-                  textAlign: TextAlign.start,
-                ),
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-                child: ElevatedButton(
-                  child: const Text('Open SDK'),
-                  onPressed: (_userId.isEmpty)
-                      ? null
-                      : () {
-                          {
-                            _openShadowflightUI();
-                          }
-                        },
-                ),
-              ),
-            ),
-          ],
+        appBar: AppBar(
+          title: Text(widget.title),
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        body: FutureBuilder<String>(
+            future: _userId,
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                case ConnectionState.waiting:
+                  return const CircularProgressIndicator();
+                case ConnectionState.active:
+                case ConnectionState.done:
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    final userId = snapshot.data!;
+                    return _successContent(userId);
+                  }
+              }
+            }));
+  }
+
+  Widget _successContent(String userId) {
+    return Column(
+      children: [
+        Visibility(
+            visible: _state == ScreenState.LOGIN_FORM,
+            child: LoginContent(
+              textController: _textUserIdController,
+              onLoginClick: () {
+                _loginShadowflightSDK(_textUserIdController.text).then((value) {
+                  return _updateUser(value);
+                }).then((value) {
+                  _updateScreenState(value);
+                });
+              },
+            )),
+        Visibility(
+            visible: _state == ScreenState.LOGOUT,
+            child: LogoutContent(
+              text: userId,
+              onOpenSdkClick: () => _openShadowflightUI(),
+              onLogoutClick: () {
+                _logoutShadowflightSDK().then((value) {
+                  return _updateUser("");
+                }).then((value) {
+                  _updateScreenState(value);
+                });
+              },
+            )),
+      ],
     );
+  }
+
+  Future<String> _updateUser(String userId) async {
+    final SharedPreferences prefs = await _prefs;
+    _userId = prefs.setString(USER_ID_PREF, userId).then((bool success) {
+      return userId;
+    });
+    return _userId;
+  }
+
+  void _updateScreenState(String userId) {
+    setState(() {
+      if (userId.isEmpty) {
+        _state = ScreenState.LOGIN_FORM;
+      } else {
+        _state = ScreenState.LOGOUT;
+      }
+    });
+  }
+
+  Future<String> _loginShadowflightSDK(String userId) async {
+    try {
+      await _shadowflightApi.login(userId);
+    } on PlatformException catch (e) {
+      debugPrint("Error: '${e.message}'.");
+    }
+    return userId;
+  }
+
+  Future<void> _logoutShadowflightSDK() async {
+    try {
+      await _shadowflightApi.logout();
+    } on PlatformException catch (e) {
+      debugPrint("Error: '${e.message}'.");
+    }
   }
 
   Future<void> _openShadowflightUI() async {
     try {
-      await _shadowflightApi.openShadowflightSDK(_userId);
+      await _shadowflightApi.navigateToDashboard();
     } on PlatformException catch (e) {
       debugPrint("Error: '${e.message}'.");
     }

@@ -33,105 +33,58 @@ private func nilOrValue<T>(_ value: Any?) -> T? {
   if value is NSNull { return nil }
   return value as! T?
 }
-
-/// Generated class from Pigeon that represents data sent in messages.
-struct Message {
-  var title: String? = nil
-  var text: String? = nil
-
-  static func fromList(_ list: [Any?]) -> Message? {
-    let title: String? = nilOrValue(list[0])
-    let text: String? = nilOrValue(list[1])
-
-    return Message(
-      title: title,
-      text: text
-    )
-  }
-  func toList() -> [Any?] {
-    return [
-      title,
-      text,
-    ]
-  }
-}
-private class ShadowflightApiCodecReader: FlutterStandardReader {
-  override func readValue(ofType type: UInt8) -> Any? {
-    switch type {
-      case 128:
-        return Message.fromList(self.readValue() as! [Any?])
-      default:
-        return super.readValue(ofType: type)
-    }
-  }
-}
-
-private class ShadowflightApiCodecWriter: FlutterStandardWriter {
-  override func writeValue(_ value: Any) {
-    if let value = value as? Message {
-      super.writeByte(128)
-      super.writeValue(value.toList())
-    } else {
-      super.writeValue(value)
-    }
-  }
-}
-
-private class ShadowflightApiCodecReaderWriter: FlutterStandardReaderWriter {
-  override func reader(with data: Data) -> FlutterStandardReader {
-    return ShadowflightApiCodecReader(data: data)
-  }
-
-  override func writer(with data: NSMutableData) -> FlutterStandardWriter {
-    return ShadowflightApiCodecWriter(data: data)
-  }
-}
-
-class ShadowflightApiCodec: FlutterStandardMessageCodec {
-  static let shared = ShadowflightApiCodec(readerWriter: ShadowflightApiCodecReaderWriter())
-}
-
 /// Generated protocol from Pigeon that represents a handler of messages from Flutter.
 protocol ShadowflightApi {
-  func replyBackTest(text: String) throws -> Message
-  func openShadowflightSDK(userId: String) throws
+  func login(userId: String) throws
+  func logout() throws
+  func navigateToDashboard() throws
 }
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
 class ShadowflightApiSetup {
   /// The codec used by ShadowflightApi.
-  static var codec: FlutterStandardMessageCodec { ShadowflightApiCodec.shared }
   /// Sets up an instance of `ShadowflightApi` to handle messages through the `binaryMessenger`.
   static func setUp(binaryMessenger: FlutterBinaryMessenger, api: ShadowflightApi?) {
-    let replyBackTestChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.ShadowflightApi.replyBackTest", binaryMessenger: binaryMessenger, codec: codec)
+    let loginChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.ShadowflightApi.login", binaryMessenger: binaryMessenger)
     if let api = api {
-      replyBackTestChannel.setMessageHandler { message, reply in
-        let args = message as! [Any?]
-        let textArg = args[0] as! String
-        do {
-          let result = try api.replyBackTest(text: textArg)
-          reply(wrapResult(result))
-        } catch {
-          reply(wrapError(error))
-        }
-      }
-    } else {
-      replyBackTestChannel.setMessageHandler(nil)
-    }
-    let openShadowflightSDKChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.ShadowflightApi.openShadowflightSDK", binaryMessenger: binaryMessenger, codec: codec)
-    if let api = api {
-      openShadowflightSDKChannel.setMessageHandler { message, reply in
+      loginChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
         let userIdArg = args[0] as! String
         do {
-          try api.openShadowflightSDK(userId: userIdArg)
+          try api.login(userId: userIdArg)
           reply(wrapResult(nil))
         } catch {
           reply(wrapError(error))
         }
       }
     } else {
-      openShadowflightSDKChannel.setMessageHandler(nil)
+      loginChannel.setMessageHandler(nil)
+    }
+    let logoutChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.ShadowflightApi.logout", binaryMessenger: binaryMessenger)
+    if let api = api {
+      logoutChannel.setMessageHandler { _, reply in
+        do {
+          try api.logout()
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      logoutChannel.setMessageHandler(nil)
+    }
+    let navigateToDashboardChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.ShadowflightApi.navigateToDashboard", binaryMessenger: binaryMessenger)
+    if let api = api {
+      navigateToDashboardChannel.setMessageHandler { _, reply in
+        do {
+          try api.navigateToDashboard()
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      navigateToDashboardChannel.setMessageHandler(nil)
     }
   }
 }
