@@ -21,21 +21,21 @@ static id GetNullableObjectAtIndex(NSArray *array, NSInteger key) {
   return (result == [NSNull null]) ? nil : result;
 }
 
-NSObject<FlutterMessageCodec> *ShadowflightApiGetCodec(void) {
+NSObject<FlutterMessageCodec> *ReccoApiGetCodec(void) {
   static FlutterStandardMessageCodec *sSharedObject = nil;
   sSharedObject = [FlutterStandardMessageCodec sharedInstance];
   return sSharedObject;
 }
 
-void ShadowflightApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<ShadowflightApi> *api) {
+void ReccoApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<ReccoApi> *api) {
   {
     FlutterBasicMessageChannel *channel =
       [[FlutterBasicMessageChannel alloc]
-        initWithName:@"dev.flutter.pigeon.ShadowflightApi.login"
+        initWithName:@"dev.flutter.pigeon.ReccoApi.login"
         binaryMessenger:binaryMessenger
-        codec:ShadowflightApiGetCodec()];
+        codec:ReccoApiGetCodec()];
     if (api) {
-      NSCAssert([api respondsToSelector:@selector(loginUserId:error:)], @"ShadowflightApi api (%@) doesn't respond to @selector(loginUserId:error:)", api);
+      NSCAssert([api respondsToSelector:@selector(loginUserId:error:)], @"ReccoApi api (%@) doesn't respond to @selector(loginUserId:error:)", api);
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         NSArray *args = message;
         NSString *arg_userId = GetNullableObjectAtIndex(args, 0);
@@ -50,11 +50,11 @@ void ShadowflightApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<S
   {
     FlutterBasicMessageChannel *channel =
       [[FlutterBasicMessageChannel alloc]
-        initWithName:@"dev.flutter.pigeon.ShadowflightApi.logout"
+        initWithName:@"dev.flutter.pigeon.ReccoApi.logout"
         binaryMessenger:binaryMessenger
-        codec:ShadowflightApiGetCodec()];
+        codec:ReccoApiGetCodec()];
     if (api) {
-      NSCAssert([api respondsToSelector:@selector(logoutWithError:)], @"ShadowflightApi api (%@) doesn't respond to @selector(logoutWithError:)", api);
+      NSCAssert([api respondsToSelector:@selector(logoutWithError:)], @"ReccoApi api (%@) doesn't respond to @selector(logoutWithError:)", api);
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         FlutterError *error;
         [api logoutWithError:&error];
@@ -67,11 +67,11 @@ void ShadowflightApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<S
   {
     FlutterBasicMessageChannel *channel =
       [[FlutterBasicMessageChannel alloc]
-        initWithName:@"dev.flutter.pigeon.ShadowflightApi.navigateToDashboard"
+        initWithName:@"dev.flutter.pigeon.ReccoApi.navigateToDashboard"
         binaryMessenger:binaryMessenger
-        codec:ShadowflightApiGetCodec()];
+        codec:ReccoApiGetCodec()];
     if (api) {
-      NSCAssert([api respondsToSelector:@selector(navigateToDashboardWithError:)], @"ShadowflightApi api (%@) doesn't respond to @selector(navigateToDashboardWithError:)", api);
+      NSCAssert([api respondsToSelector:@selector(navigateToDashboardWithError:)], @"ReccoApi api (%@) doesn't respond to @selector(navigateToDashboardWithError:)", api);
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         FlutterError *error;
         [api navigateToDashboardWithError:&error];

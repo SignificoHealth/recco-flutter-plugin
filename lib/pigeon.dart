@@ -8,11 +8,11 @@ import 'dart:typed_data' show Float64List, Int32List, Int64List, Uint8List;
 import 'package:flutter/foundation.dart' show ReadBuffer, WriteBuffer;
 import 'package:flutter/services.dart';
 
-class ShadowflightApi {
-  /// Constructor for [ShadowflightApi].  The [binaryMessenger] named argument is
+class ReccoApi {
+  /// Constructor for [ReccoApi].  The [binaryMessenger] named argument is
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
-  ShadowflightApi({BinaryMessenger? binaryMessenger})
+  ReccoApi({BinaryMessenger? binaryMessenger})
       : _binaryMessenger = binaryMessenger;
   final BinaryMessenger? _binaryMessenger;
 
@@ -20,7 +20,7 @@ class ShadowflightApi {
 
   Future<void> login(String arg_userId) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.ShadowflightApi.login', codec,
+        'dev.flutter.pigeon.ReccoApi.login', codec,
         binaryMessenger: _binaryMessenger);
     final List<Object?>? replyList =
         await channel.send(<Object?>[arg_userId]) as List<Object?>?;
@@ -42,7 +42,7 @@ class ShadowflightApi {
 
   Future<void> logout() async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.ShadowflightApi.logout', codec,
+        'dev.flutter.pigeon.ReccoApi.logout', codec,
         binaryMessenger: _binaryMessenger);
     final List<Object?>? replyList =
         await channel.send(null) as List<Object?>?;
@@ -64,7 +64,7 @@ class ShadowflightApi {
 
   Future<void> navigateToDashboard() async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.ShadowflightApi.navigateToDashboard', codec,
+        'dev.flutter.pigeon.ReccoApi.navigateToDashboard', codec,
         binaryMessenger: _binaryMessenger);
     final List<Object?>? replyList =
         await channel.send(null) as List<Object?>?;

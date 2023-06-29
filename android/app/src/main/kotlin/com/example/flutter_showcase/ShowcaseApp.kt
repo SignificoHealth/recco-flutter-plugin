@@ -1,7 +1,7 @@
 package com.example.flutter_showcase
 
-import com.shadowflight.core.model.SDKConfig
-import com.shadowflight.ui.UIApi
+import com.recco.api.model.SDKConfig
+import com.recco.api.ui.ReccoApiUI
 import dagger.hilt.android.HiltAndroidApp
 import io.flutter.app.FlutterApplication
 
@@ -10,7 +10,7 @@ class ShowcaseApp : FlutterApplication() {
     override fun onCreate() {
         super.onCreate()
 
-        UIApi.init(
+        ReccoApiUI.init(
             sdkConfig = SDKConfig(
                 appName = "Flutter Android Showcase",
                 apiSecret = "YuJi02IHzJDxe-oiqT1QOptnh9mGMnulPPx5C3xoyBSe0dNha-m1qOjG9DopeSspqR9d6-Y",

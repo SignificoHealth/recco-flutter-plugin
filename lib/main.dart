@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Shadowflight'),
+      home: const MyHomePage(title: 'Recco - Flutter Demo'),
     );
   }
 }
@@ -40,7 +40,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final ShadowflightApi _shadowflightApi = ShadowflightApi();
+  final ReccoApi _reccoApi = ReccoApi();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   late ScreenState _state;
   late Future<String> _userId;
@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: LoginContent(
               textController: _textUserIdController,
               onLoginClick: () {
-                _loginShadowflightSDK(_textUserIdController.text).then((value) {
+                _loginReccoSDK(_textUserIdController.text).then((value) {
                   return _updateUser(value);
                 }).then((value) {
                   _updateScreenState(value);
@@ -100,9 +100,9 @@ class _MyHomePageState extends State<MyHomePage> {
             visible: _state == ScreenState.LOGOUT,
             child: LogoutContent(
               text: userId,
-              onOpenSdkClick: () => _openShadowflightUI(),
+              onOpenSdkClick: () => _openReccoUI(),
               onLogoutClick: () {
-                _logoutShadowflightSDK().then((value) {
+                _logoutReccoSDK().then((value) {
                   return _updateUser("");
                 }).then((value) {
                   _updateScreenState(value);
@@ -131,26 +131,26 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Future<String> _loginShadowflightSDK(String userId) async {
+  Future<String> _loginReccoSDK(String userId) async {
     try {
-      await _shadowflightApi.login(userId);
+      await _reccoApi.login(userId);
     } on PlatformException catch (e) {
       debugPrint("Error: '${e.message}'.");
     }
     return userId;
   }
 
-  Future<void> _logoutShadowflightSDK() async {
+  Future<void> _logoutReccoSDK() async {
     try {
-      await _shadowflightApi.logout();
+      await _reccoApi.logout();
     } on PlatformException catch (e) {
       debugPrint("Error: '${e.message}'.");
     }
   }
 
-  Future<void> _openShadowflightUI() async {
+  Future<void> _openReccoUI() async {
     try {
-      await _shadowflightApi.navigateToDashboard();
+      await _reccoApi.navigateToDashboard();
     } on PlatformException catch (e) {
       debugPrint("Error: '${e.message}'.");
     }

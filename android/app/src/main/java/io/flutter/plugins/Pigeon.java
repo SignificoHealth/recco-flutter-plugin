@@ -57,7 +57,7 @@ public class Pigeon {
     return errorList;
   }
   /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
-  public interface ShadowflightApi {
+  public interface ReccoApi {
 
     void login(@NonNull String userId);
 
@@ -65,16 +65,16 @@ public class Pigeon {
 
     void navigateToDashboard();
 
-    /** The codec used by ShadowflightApi. */
+    /** The codec used by ReccoApi. */
     static @NonNull MessageCodec<Object> getCodec() {
       return new StandardMessageCodec();
     }
-    /**Sets up an instance of `ShadowflightApi` to handle messages through the `binaryMessenger`. */
-    static void setup(@NonNull BinaryMessenger binaryMessenger, @Nullable ShadowflightApi api) {
+    /**Sets up an instance of `ReccoApi` to handle messages through the `binaryMessenger`. */
+    static void setup(@NonNull BinaryMessenger binaryMessenger, @Nullable ReccoApi api) {
       {
         BasicMessageChannel<Object> channel =
             new BasicMessageChannel<>(
-                binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.login", getCodec());
+                binaryMessenger, "dev.flutter.pigeon.ReccoApi.login", getCodec());
         if (api != null) {
           channel.setMessageHandler(
               (message, reply) -> {
@@ -98,7 +98,7 @@ public class Pigeon {
       {
         BasicMessageChannel<Object> channel =
             new BasicMessageChannel<>(
-                binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.logout", getCodec());
+                binaryMessenger, "dev.flutter.pigeon.ReccoApi.logout", getCodec());
         if (api != null) {
           channel.setMessageHandler(
               (message, reply) -> {
@@ -120,7 +120,7 @@ public class Pigeon {
       {
         BasicMessageChannel<Object> channel =
             new BasicMessageChannel<>(
-                binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.navigateToDashboard", getCodec());
+                binaryMessenger, "dev.flutter.pigeon.ReccoApi.navigateToDashboard", getCodec());
         if (api != null) {
           channel.setMessageHandler(
               (message, reply) -> {

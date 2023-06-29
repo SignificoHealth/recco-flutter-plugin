@@ -34,18 +34,18 @@ private func nilOrValue<T>(_ value: Any?) -> T? {
   return value as! T?
 }
 /// Generated protocol from Pigeon that represents a handler of messages from Flutter.
-protocol ShadowflightApi {
+protocol ReccoApi {
   func login(userId: String) throws
   func logout() throws
   func navigateToDashboard() throws
 }
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
-class ShadowflightApiSetup {
-  /// The codec used by ShadowflightApi.
-  /// Sets up an instance of `ShadowflightApi` to handle messages through the `binaryMessenger`.
-  static func setUp(binaryMessenger: FlutterBinaryMessenger, api: ShadowflightApi?) {
-    let loginChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.ShadowflightApi.login", binaryMessenger: binaryMessenger)
+class ReccoApiSetup {
+  /// The codec used by ReccoApi.
+  /// Sets up an instance of `ReccoApi` to handle messages through the `binaryMessenger`.
+  static func setUp(binaryMessenger: FlutterBinaryMessenger, api: ReccoApi?) {
+    let loginChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.ReccoApi.login", binaryMessenger: binaryMessenger)
     if let api = api {
       loginChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -60,7 +60,7 @@ class ShadowflightApiSetup {
     } else {
       loginChannel.setMessageHandler(nil)
     }
-    let logoutChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.ShadowflightApi.logout", binaryMessenger: binaryMessenger)
+    let logoutChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.ReccoApi.logout", binaryMessenger: binaryMessenger)
     if let api = api {
       logoutChannel.setMessageHandler { _, reply in
         do {
@@ -73,7 +73,7 @@ class ShadowflightApiSetup {
     } else {
       logoutChannel.setMessageHandler(nil)
     }
-    let navigateToDashboardChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.ShadowflightApi.navigateToDashboard", binaryMessenger: binaryMessenger)
+    let navigateToDashboardChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.ReccoApi.navigateToDashboard", binaryMessenger: binaryMessenger)
     if let api = api {
       navigateToDashboardChannel.setMessageHandler { _, reply in
         do {

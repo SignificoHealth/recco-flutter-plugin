@@ -43,21 +43,21 @@ class FlutterError (
   val details: Any? = null
 ) : Throwable()
 /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
-interface ShadowflightApi {
+interface ReccoApi {
   fun login(userId: String)
   fun logout()
   fun navigateToDashboard()
 
   companion object {
-    /** The codec used by ShadowflightApi. */
+    /** The codec used by ReccoApi. */
     val codec: MessageCodec<Any?> by lazy {
       StandardMessageCodec()
     }
-    /** Sets up an instance of `ShadowflightApi` to handle messages through the `binaryMessenger`. */
+    /** Sets up an instance of `ReccoApi` to handle messages through the `binaryMessenger`. */
     @Suppress("UNCHECKED_CAST")
-    fun setUp(binaryMessenger: BinaryMessenger, api: ShadowflightApi?) {
+    fun setUp(binaryMessenger: BinaryMessenger, api: ReccoApi?) {
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.login", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.ReccoApi.login", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -76,7 +76,7 @@ interface ShadowflightApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.logout", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.ReccoApi.logout", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
             var wrapped: List<Any?>
@@ -93,7 +93,7 @@ interface ShadowflightApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.ShadowflightApi.navigateToDashboard", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.ReccoApi.navigateToDashboard", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
             var wrapped: List<Any?>

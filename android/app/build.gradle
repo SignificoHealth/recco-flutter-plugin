@@ -75,7 +75,7 @@ repositories {
     maven { url 'https://jitpack.io' }
     maven {
         name = "GithubPackages"
-        url = "https://maven.pkg.github.com/viluahealthcare/android-shadowflight-sdk"
+        url = "https://maven.pkg.github.com/viluahealthcare/recco-android-sdk"
         credentials {
             username = gprUser
             password = gprKey
@@ -86,8 +86,7 @@ repositories {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation("com.significo:shadowflight-ui:0.0.0")
-    //implementation("com.significo:shadowflight-headless:0.0.0")
+    implementation("com.significo:recco-api-ui:0.0.0")
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"

@@ -3,27 +3,27 @@ package com.example.flutter_showcase
 import android.content.Context
 import android.util.Log
 import androidx.annotation.NonNull
-import com.shadowflight.ui.UIApi
-import dev.flutter.pigeon.ShadowflightApi
+import com.recco.api.ui.ReccoApiUI
+import dev.flutter.pigeon.ReccoApi
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 
-private const val TAG = "Shadowflight Android"
+private const val TAG = "Recco Android"
 
-private class PigeonApiImplementation(private val context: Context) : ShadowflightApi {
+private class PigeonApiImplementation(private val context: Context) : ReccoApi {
 
     override fun login(userId: String) {
-        UIApi.login(userId = userId)
+        ReccoApiUI.login(userId = userId)
         Log.d(TAG, "Login into the SDK: userId=$userId")
     }
 
     override fun logout() {
-        UIApi.logout()
+        ReccoApiUI.logout()
         Log.d(TAG, "Logout from the SDK")
     }
 
     override fun navigateToDashboard() {
-        UIApi.navigateToDashboard(context)
+        ReccoApiUI.navigateToDashboard(context)
         Log.d(TAG, "Navigate to the SDK Dashboard")
     }
 }
@@ -33,6 +33,6 @@ class MainActivity : FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
 
         val api = PigeonApiImplementation(this)
-        ShadowflightApi.setUp(flutterEngine.dartExecutor.binaryMessenger, api)
+        ReccoApi.setUp(flutterEngine.dartExecutor.binaryMessenger, api)
     }
 }

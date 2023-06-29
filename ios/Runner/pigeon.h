@@ -11,15 +11,15 @@
 NS_ASSUME_NONNULL_BEGIN
 
 
-/// The codec used by ShadowflightApi.
-NSObject<FlutterMessageCodec> *ShadowflightApiGetCodec(void);
+/// The codec used by ReccoApi.
+NSObject<FlutterMessageCodec> *ReccoApiGetCodec(void);
 
-@protocol ShadowflightApi
+@protocol ReccoApi
 - (void)loginUserId:(NSString *)userId error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)logoutWithError:(FlutterError *_Nullable *_Nonnull)error;
 - (void)navigateToDashboardWithError:(FlutterError *_Nullable *_Nonnull)error;
 @end
 
-extern void ShadowflightApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<ShadowflightApi> *_Nullable api);
+extern void ReccoApiSetup(id<FlutterBinaryMessenger> binaryMessenger, NSObject<ReccoApi> *_Nullable api);
 
 NS_ASSUME_NONNULL_END
