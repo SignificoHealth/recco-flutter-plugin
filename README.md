@@ -1,6 +1,6 @@
 # Flutter Recco
 
-A demo Flutter project for testing the integration with the Shadowflight SDK.
+A demo Flutter project for testing the integration with the Recco SDK.
 
 ## Getting Started
 
