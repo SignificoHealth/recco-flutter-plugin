@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'constants/strings.dart';
+import 'widgets/recco_primary_button.dart';
+import 'widgets/recco_secondary_button.dart';
+
 class LogoutContent extends StatelessWidget {
   final String text;
   final VoidCallback onOpenSdkClick;
@@ -13,56 +17,58 @@ class LogoutContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-              child: Text(
-                "Current userId: $text",
-                style: Theme.of(context).textTheme.bodySmall,
-                textAlign: TextAlign.start,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-              child: ElevatedButton(
-                onPressed: (text.isEmpty)
-                    ? null
-                    : () {
-                        {
-                          onOpenSdkClick();
-                        }
-                      },
-                child: const Text('Open SDK'),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-              child: ElevatedButton(
-                onPressed: (text.isEmpty)
-                    ? null
-                    : () {
-                        {
-                          onLogoutClick();
-                        }
-                      },
-                child: const Text('Logout'),
-              ),
-            ),
-          ),
-        ],
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(24, 60, 24, 0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Image(image: AssetImage('assets/images/bg_logo.webp')),
+            const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 64),
+                child:
+                    Image(image: AssetImage('assets/images/bg_shapes.webp'))),
+            Padding(
+                padding: const EdgeInsets.only(top: 48),
+                child: RichText(
+                    textAlign: TextAlign.center,
+                    text: const TextSpan(
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Color(0xFF463738),
+                        fontFamily: 'poppins',
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(text: Strings.welcomeGreeting),
+                        TextSpan(
+                            text: Strings.welcomeCompanyName,
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(text: Strings.welcomeMessage),
+                        TextSpan(
+                            text: Strings.welcomeProductName,
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ],
+                    ))),
+            Expanded(
+                child: Align(
+                    alignment: FractionalOffset.bottomCenter,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          ReccoPrimaryButton(
+                              buttonText: Strings.openReccoButton,
+                              onPressedButton: () {
+                                onOpenSdkClick();
+                              }),
+                          ReccoSecondaryButton(
+                            buttonText: Strings.logoutButton,
+                            onPressedButton: () {
+                              onLogoutClick();
+                            },
+                          ),
+                        ])))
+          ],
+        ),
       ),
     );
   }

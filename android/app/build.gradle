@@ -75,7 +75,7 @@ repositories {
     maven { url 'https://jitpack.io' }
     maven {
         name = "GithubPackages"
-        url = "https://maven.pkg.github.com/viluahealthcare/recco-android-sdk"
+        url = "https://maven.pkg.github.com/sf-recco/android-sdk"
         credentials {
             username = gprUser
             password = gprKey

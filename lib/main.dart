@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_showcase/login_content.dart';
 import 'package:flutter_showcase/pigeon.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'login_content.dart';
 import 'logout_content.dart';
 
-enum ScreenState { LOGIN_FORM, LOGOUT }
+enum ScreenState { loginForm, logout }
 
-const String USER_ID_PREF = "userIdKey";
+const String userIdPref = "userIdKey";
 
 void main() {
   runApp(const MyApp());
@@ -17,14 +17,18 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Recco Showcase',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+        primary: const Color(0xFF463738),
+        onPrimary: const Color(0xFFF6F190),
+        secondary: const Color(0xFFF6F190),
+        onSecondary: const Color(0xFFEBEBEB),
+        surface: const Color(0xFFEBEBEB),
+      )),
       home: const MyHomePage(title: 'Recco - Flutter Demo'),
     );
   }
@@ -50,9 +54,12 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _userId = _prefs.then((SharedPreferences prefs) {
-      final String userId = prefs.getString(USER_ID_PREF) ?? "";
-      _updateScreenState(userId);
+      final String userId = prefs.getString(userIdPref) ?? "";
       return userId;
+    }).then((value) {
+      _state = value.isEmpty ? ScreenState.loginForm : ScreenState.logout;
+      _updateScreenState(_state);
+      return value;
     });
   }
 
@@ -85,19 +92,19 @@ class _MyHomePageState extends State<MyHomePage> {
     return Column(
       children: [
         Visibility(
-            visible: _state == ScreenState.LOGIN_FORM,
+            visible: _state == ScreenState.loginForm,
             child: LoginContent(
               textController: _textUserIdController,
               onLoginClick: () {
                 _loginReccoSDK(_textUserIdController.text).then((value) {
                   return _updateUser(value);
                 }).then((value) {
-                  _updateScreenState(value);
+                  _updateScreenState(ScreenState.logout);
                 });
               },
             )),
         Visibility(
-            visible: _state == ScreenState.LOGOUT,
+            visible: _state == ScreenState.logout,
             child: LogoutContent(
               text: userId,
               onOpenSdkClick: () => _openReccoUI(),
@@ -105,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 _logoutReccoSDK().then((value) {
                   return _updateUser("");
                 }).then((value) {
-                  _updateScreenState(value);
+                  _updateScreenState(ScreenState.loginForm);
                 });
               },
             )),
@@ -115,19 +122,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<String> _updateUser(String userId) async {
     final SharedPreferences prefs = await _prefs;
-    _userId = prefs.setString(USER_ID_PREF, userId).then((bool success) {
+    _userId = prefs.setString(userIdPref, userId).then((bool success) {
       return userId;
     });
     return _userId;
   }
 
-  void _updateScreenState(String userId) {
+  void _updateScreenState(ScreenState state) {
     setState(() {
-      if (userId.isEmpty) {
-        _state = ScreenState.LOGIN_FORM;
-      } else {
-        _state = ScreenState.LOGOUT;
-      }
+      _state = state;
     });
   }
 
