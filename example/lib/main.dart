@@ -55,6 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
+    _initializeRecco("_20_0iKompsh-xy0Pc2YAYLHFimFV0qCZVSPobB982K1dIhhkYwbhutnBsSQsNqV0aludu8");
+
     super.initState();
     _userId = _prefs.then((SharedPreferences prefs) {
       final String userId = prefs.getString(userIdPref) ?? "";
@@ -135,6 +137,14 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _state = state;
     });
+  }
+
+  Future<void> _initializeRecco(String clientSecret) async {
+    try {
+      _reccoPlugin.initialize(clientSecret, ReccoStyle.fresh());
+    } on PlatformException catch (e) {
+      debugPrint("Error: '${e.message}'.");
+    }
   }
 
   Future<String> _loginReccoSDK(String userId) async {

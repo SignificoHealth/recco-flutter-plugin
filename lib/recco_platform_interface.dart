@@ -1,4 +1,5 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:recco/recco.dart';
 
 import 'recco_method_channel.dart';
 
@@ -14,6 +15,10 @@ abstract class ReccoPlatform extends PlatformInterface {
   static set instance(ReccoPlatform instance) {
     PlatformInterface.verifyToken(instance, _token);
     _instance = instance;
+  }
+
+  Future<void> initialize(String clientSecret, ReccoStyle style) async {
+    throw UnimplementedError('initialize() has not been implemented.');
   }
 
   Future<void> login(String userId) {

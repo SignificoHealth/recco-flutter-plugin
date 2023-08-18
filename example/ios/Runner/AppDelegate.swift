@@ -1,6 +1,5 @@
 import UIKit
 import Flutter
-import ReccoUI
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -17,7 +16,6 @@ import ReccoUI
         _ application: UIApplication,
         willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        ReccoUI.initialize(clientSecret: "yvU5m39iXgVtOOKSQqz8neU5mP5HkOamKKMhcX5FDdBE6s6lmrdkC87XQr5dApi5r-vVOFo")
         return super.application(application, willFinishLaunchingWithOptions: launchOptions)
     }
 }
