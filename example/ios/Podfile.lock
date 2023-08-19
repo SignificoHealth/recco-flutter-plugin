@@ -6,8 +6,8 @@ PODS:
   - recco (0.0.1):
     - Flutter
     - ReccoUI
-  - ReccoHeadless (1.0.0)
-  - ReccoUI (1.0.0):
+  - ReccoHeadless (1.0.1)
+  - ReccoUI (1.0.1):
     - Kingfisher
     - ReccoHeadless
   - shared_preferences_foundation (0.0.1):
@@ -42,8 +42,8 @@ SPEC CHECKSUMS:
   integration_test: 13825b8a9334a850581300559b8839134b124670
   Kingfisher: 59f908b6d2f403b0a3e539debb0eec05cb27002c
   recco: 84b6faf39e249e5e8bd854ac52070f778488c4ee
-  ReccoHeadless: 0035b7ff7ff48737b696e15f9cc467225483a83c
-  ReccoUI: 23e72d30627504bad5e515f9b63476afcec1d273
+  ReccoHeadless: d9355f1adceae2dc24993b785bce5b7126e9700f
+  ReccoUI: f18087d2e145afdc5f3e942332236b446e331418
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
 
 PODFILE CHECKSUM: 69dd3f0dbdb387c00d508764769d10911984dcec

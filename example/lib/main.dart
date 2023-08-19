@@ -141,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _initializeRecco(String clientSecret) async {
     try {
-      _reccoPlugin.initialize(clientSecret, ReccoStyle.fresh());
+      _reccoPlugin.initialize(clientSecret, ReccoStyle.spring());
     } on PlatformException catch (e) {
       debugPrint("Error: '${e.message}'.");
     }
