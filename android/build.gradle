@@ -1,36 +1,74 @@
+group 'com.significo.recco'
+version '1.0-SNAPSHOT'
+
 buildscript {
-    ext.kotlin_version = '1.7.10'
-    ext.hilt_version = '2.46.1'
+    ext.kotlin_version = '1.8.0'
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven {
+            name = "GithubPackages"
+            url = "https://maven.pkg.github.com/sf-recco/android-sdk"
+            credentials {
+                username = gprUser
+                password = gprKey
+            }
+        }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
 
-plugins {
-    id 'com.google.dagger.hilt.android' version "$hilt_version" apply false
+    }
 }
 
 allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven {
+            name = "GithubPackages"
+            url = "https://maven.pkg.github.com/sf-recco/android-sdk"
+            credentials {
+                username = gprUser
+                password = gprKey
+            }
+        }
     }
 }
 
-rootProject.buildDir = '../build'
-subprojects {
-    project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
-    project.evaluationDependsOn(':app')
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+
+    compileSdkVersion 33
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        minSdkVersion 24
+        targetSdkVersion 33
+    }
 }
 
-tasks.register("clean", Delete) {
-    delete rootProject.buildDir
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation("com.significo:recco-api-ui:0.0.4")
+
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    testImplementation 'org.mockito:mockito-core:5.3.1'
 }

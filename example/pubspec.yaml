@@ -1,0 +1,33 @@
+name: recco_showcase
+description: Demonstrates how to use the Recco Flutter plugin.
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.0.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  shared_preferences: ^2.1.2
+
+  recco:
+    # When depending on this package from a real application you should use:
+    #   recco: ^x.y.z
+    path: ../
+
+dev_dependencies:
+  integration_test:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  
+  flutter_lints: ^2.0.0
+
+# Flutter packages.
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/

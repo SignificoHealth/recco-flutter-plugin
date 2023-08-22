@@ -1,27 +1,110 @@
-# Flutter Recco
+![recco_header](./art/recco_logo_amethyst.svg)
 
-A demo Flutter project for testing the integration with the Recco SDK.
 
-## Getting Started
+![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
+![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
+![iOS](https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white)
 
-This project is a starting point for a Flutter application.
+![Pub DEV](https://img.shields.io/badge/PubDev-0.0.0-blue)
 
-A few resources to get you started if this is your first Flutter project:
+# Recco Flutter Plugin
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+This repository holds the codebase for the Recco Flutter plugin. Instructions on how to add and use this plugin can be found in the [Usage](#usage) section.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
 
-## Communication between platforms
+# Overview
 
-This app is using [Pigeon](https://pub.dev/packages/pigeon) lib to make easy the communication between different platforms.
+Personalized, and user-friendly approach to health and wellness recommendations based on users' unique interests, motivations, and health behaviors. Whether they are looking to improve their fitness, manage their stress, or simply lead a more fulfilling life. __`Recco` is designed to help them reach their full potential.__
 
-This works as follow:
-- Edit `pigeons/recco_api.dart` file to create the communication API layer between flutter and other native platforms.
-- Run  `./generate_pigeon.sh` to generate the API for the different platform languages. You can edit this file to set options for the generated code.
-- The new generated code will be saved in the output folders specified in this file, in the platform folders (e.g: `android`, `ios`,...).
-- Connect the concrete implementation of the generated API in your native code using the `.setUp()` method (see `MainActivity` as reference).
-- Call the api methods from flutter code to communicate with the native platforms (see `lib/main.dart` as reference, this is the entry point of the app).
+Learn more about Recco SDK:
+
+- [Recco SDK Android][Recco SDK Android]
+- [Recco SDK iOS][Recco SDK iOS]
+
+## Usage
+
+Add this to pubspec.yaml
+
+```yml
+dependencies:
+  recco: 0.0.0
+```
+
+## Initial setup on Android
+Recco Android SDK depends internally on Hilt. If your Android app does not use Hilt already, you will have to add this setup:
+
+Add Hilt dependency to your app `build.gradle`:
+
+```gradle
+implementation "com.google.dagger:hilt-android:2.47"
+kapt "com.google.dagger:hilt-android-compiler:2.47"
+```
+
+Then decorate your `Application` class with the `@HiltAndroidApp` annotation:
+
+```kotlin
+@HiltAndroidApp
+class ShowcaseApp : FlutterApplication() {
+
+}
+```
+You can check the `example` app inside this repo for more details.
+
+## ReccoPlugin new Instance
+
+```dart
+final Recco _reccoPlugin = Recco();
+```
+
+## Init
+Initialize Recco SDK at the `initState` of your app.
+
+```dart
+Future<void> _initializeRecco(String clientSecret) async {
+    try {
+      _reccoPlugin.initialize(clientSecret, ReccoStyle.spring());
+    } on PlatformException catch (e) {
+      debugPrint("Error: '${e.message}'.");
+    }
+  }
+```
+
+## Login
+
+```dart
+Future<String> _loginReccoSDK(String userId) async {
+    try {
+        _reccoPlugin.login(userId);
+    } on PlatformException catch (e) {
+        debugPrint("Error: '${e.message}'.");
+    }
+    return userId;
+}
+```
+
+## Logout
+
+```dart
+Future<void> _logoutReccoSDK() async {
+    try {
+      _reccoPlugin.logout();
+    } on PlatformException catch (e) {
+      debugPrint("Error: '${e.message}'.");
+    }
+}
+```
+
+## OpenReccoUi
+
+```dart
+Future<void> _openReccoUI() async {
+    try {
+      _reccoPlugin.openReccoUI();
+    } on PlatformException catch (e) {
+      debugPrint("Error: '${e.message}'.");
+    }
+}
+```
+
+[Recco SDK Android]:https://github.com/sf-recco/android-sdk
+[Recco SDK iOS]:https://github.com/sf-recco/ios-sdk
