@@ -11,9 +11,6 @@
 
 This repository holds the codebase for the Recco Flutter plugin. Instructions on how to add and use this plugin can be found in the [Usage](#usage) section.
 
-You are more than welcome to install the [APK](#demo) to start playing around with the product, or clone the repository and compile it on your own if you feel like it. 
-
-However, please be aware that in order to actually integrate it into your own application, you will first need to contact our sales team to initiate the license acquisition process. For that purpose, please send an email to `recco@significo.com`.
 
 # Overview
 
@@ -33,46 +30,43 @@ dependencies:
   recco: 0.0.0
 ```
 
-## Initialize Recco in Android
+## Initial setup on Android
+Recco Android SDK depends internally on Hilt. If your Android app does not use Hilt already, you will have to add this setup:
 
-Create an Application.kt class in your Android project, reference it in your Application Manifest.xml file and add the following code:
+Add Hilt dependency to your app `build.gradle`:
+
+```gradle
+implementation "com.google.dagger:hilt-android:2.47"
+kapt "com.google.dagger:hilt-android-compiler:2.47"
+```
+
+Then decorate your `Application` class with the `@HiltAndroidApp` annotation:
 
 ```kotlin
-// Follow demo example to add Hilt Dependency.
-
 @HiltAndroidApp
 class ShowcaseApp : FlutterApplication() {
-    override fun onCreate() {
-        super.onCreate()
 
-        ReccoApiUI.init(
-            sdkConfig = ReccoConfig(
-                apiSecret = <YOUR_API_SECRET>
-            ),
-            application = this
-        )
-    }
 }
 ```
+You can check the `example` app inside this repo for more details.
 
-
-## Initialize Recco in iOS
-
-Inside your iOS application AppDelegate, add the following code:
-
-```swift
-override func application(
-        _ application: UIApplication,
-        willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-    ) -> Bool {
-        ReccoUI.initialize(clientSecret: <YOUR_API_SECRET>)
-        return super.application(application, willFinishLaunchingWithOptions: launchOptions)
-    }
-```
 ## ReccoPlugin new Instance
 
 ```dart
 final Recco _reccoPlugin = Recco();
+```
+
+## Init
+Initialize Recco SDK at the `initState` of your app.
+
+```dart
+Future<void> _initializeRecco(String clientSecret) async {
+    try {
+      _reccoPlugin.initialize(clientSecret, ReccoStyle.spring());
+    } on PlatformException catch (e) {
+      debugPrint("Error: '${e.message}'.");
+    }
+  }
 ```
 
 ## Login
