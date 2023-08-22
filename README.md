@@ -5,7 +5,7 @@
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![iOS](https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white)
 
-![Pub DEV](https://img.shields.io/badge/PubDev-0.0.0-blue)
+![Pub DEV](https://img.shields.io/badge/PubDev-0.0.2-blue)
 
 # Recco Flutter Plugin
 
@@ -27,10 +27,17 @@ Add this to pubspec.yaml
 
 ```yml
 dependencies:
-  recco: 0.0.0
+  recco: 0.0.2
 ```
 
 ## Initial setup on Android
+This Flutter plugin internally depends on the Recco Android SDK, which exposes its components through Github Packages. Therefore, the configuration for [Github Packages][Github-Packages] is required. Please refer to the [Personal Access Token][PAT] section to obtain a valid set of credentials. Once you have a valid Github PAT, proceed to configure your `gradle.properties` file located under the ~/.gradle/ folder.
+
+```groovy
+gprUser=your-github-user-here
+gprKey=your-github-PAT-here
+```
+
 Recco Android SDK depends internally on Hilt. If your Android app does not use Hilt already, you will have to add this setup:
 
 Add Hilt dependency to your app `build.gradle`:
@@ -108,3 +115,5 @@ Future<void> _openReccoUI() async {
 
 [Recco SDK Android]:https://github.com/sf-recco/android-sdk
 [Recco SDK iOS]:https://github.com/sf-recco/ios-sdk
+[Github-Packages]:https://github.com/features/packages
+[PAT]:https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
