@@ -30,7 +30,10 @@ dependencies:
   recco: 0.0.2
 ```
 
-## Initial setup on Android
+## Setup on Android
+
+### Github Packages
+
 This Flutter plugin internally depends on the Recco Android SDK, which exposes its components through Github Packages. Therefore, the configuration for [Github Packages][Github-Packages] is required. Please refer to the [Personal Access Token][PAT] section to obtain a valid set of credentials. Once you have a valid Github PAT, proceed to configure your `gradle.properties` file located under the ~/.gradle/ folder.
 
 ```groovy
@@ -38,16 +41,70 @@ gprUser=your-github-user-here
 gprKey=your-github-PAT-here
 ```
 
-Recco Android SDK depends internally on Hilt. If your Android app does not use Hilt already, you will have to add this setup:
+After setting the Github credentials, then you have to add to your app `build.gradle` file the next configuration to be able to fetch the packages:
 
-Add Hilt dependency to your app `build.gradle`:
-
-```gradle
-implementation "com.google.dagger:hilt-android:2.47"
-kapt "com.google.dagger:hilt-android-compiler:2.47"
+```groovy
+repositories {
+    mavenLocal()
+    maven { url 'https://jitpack.io' }
+    maven {
+        name = "GithubPackages"
+        url = "https://maven.pkg.github.com/sf-recco/android-sdk"
+        credentials {
+            username = gprUser
+            password = gprKey
+        }
+    }
+}
 ```
 
-Then decorate your `Application` class with the `@HiltAndroidApp` annotation:
+### Check Android Gradle plugin version and source compatibility
+
+Ensure that in your root/top level `build.gradle` file the Android Gradle plugin version is at least `7.4.0`
+
+Make sure also that in your app `build.gradle` is provided the following source compatibility configuration:
+
+```groovy
+android {
+    //...
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+}
+```
+
+### Hilt dependency
+
+Recco Android SDK depends internally on Hilt. If your Android app does not use Hilt already, you will have to add this setup:
+
+In your root/top level `build.gradle` file, add the Hilt plugin:
+
+```gradle
+plugins {
+    // ...
+    id 'com.google.dagger.hilt.android' version "2.47" apply false
+    id 'org.jetbrains.kotlin.android' version '1.8.0' apply false
+}
+```
+
+Then, in your app `build.gradle` file, resolve the Kapt and Hilt plugins, and add Hilt dependencies:
+
+```gradle
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.dagger.hilt.android'
+
+dependencies {
+    implementation "com.google.dagger:hilt-android:2.47"
+    kapt "com.google.dagger:hilt-android-compiler:2.47"
+}
+```
+
+As the last step, decorate your `Application` class with the `@HiltAndroidApp` annotation:
 
 ```kotlin
 @HiltAndroidApp
@@ -55,7 +112,25 @@ class ShowcaseApp : FlutterApplication() {
 
 }
 ```
-You can check the `example` app inside this repo for more details.
+
+and add it to the `AndroidManifest.xml`
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:name=".ShowcaseApp"
+```
+
+You can check the [Flutter example Android app][Flutter example Android app] for more details.
+
+## Setup on iOS
+This Flutter plugin internally depends on the Recco iOS SDK, which exposes its components through CocoaPods. Therefore, you need to add the Recco pod to your `Podfile` as follow:
+
+```
+pod 'ReccoUI'
+```
+
+_Note:_ Make sure you have defined `platform :ios, '14.0'` or higher in your `Podfile`.
 
 ## ReccoPlugin new Instance
 
@@ -113,6 +188,7 @@ Future<void> _openReccoUI() async {
 }
 ```
 
+[Flutter example Android app]:https://github.com/sf-recco/flutter-showcase/tree/main/example/android
 [Recco SDK Android]:https://github.com/sf-recco/android-sdk
 [Recco SDK iOS]:https://github.com/sf-recco/ios-sdk
 [Github-Packages]:https://github.com/features/packages
