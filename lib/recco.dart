@@ -3,18 +3,27 @@ import 'dart:ui';
 import 'recco_platform_interface.dart';
 
 class Recco {
+
+  /// Configures Recco given a [clientSecret] and a [style].
+  ///
+  /// UI can be customized setting a [style] from the currently available: `Fresh`, `Ocean`, `Spring`, `Tech`
   Future<void> initialize(String clientSecret, ReccoStyle style) async {
     await ReccoPlatform.instance.initialize(clientSecret, style);
   }
 
+  /// Sets user identifiers, and triggers login operation. User session login is tracked.
+  ///
+  /// [userId] identifier that enables Recco experience to be unique and custom.
   Future<void> login(String userId) async {
     await ReccoPlatform.instance.login(userId);
   }
 
+  /// Clears user credentials, cached data and triggers logout operation.
   Future<void> logout() async {
     await ReccoPlatform.instance.logout();
   }
 
+  /// Starts Recco experience by launching Recco on top of the current navigation stack.
   Future<void> openReccoUI() async {
     await ReccoPlatform.instance.openReccoUI();
   }
