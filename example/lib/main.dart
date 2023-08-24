@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'login_content.dart';
@@ -55,7 +54,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    _initializeRecco("_20_0iKompsh-xy0Pc2YAYLHFimFV0qCZVSPobB982K1dIhhkYwbhutnBsSQsNqV0aludu8");
+    _initializeRecco(
+        "_20_0iKompsh-xy0Pc2YAYLHFimFV0qCZVSPobB982K1dIhhkYwbhutnBsSQsNqV0aludu8");
 
     super.initState();
     _userId = _prefs.then((SharedPreferences prefs) {
