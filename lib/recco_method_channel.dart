@@ -40,7 +40,7 @@ class MethodChannelRecco extends ReccoPlatform {
 
   @override
   Future<void> login(String userId) async {
-    await methodChannel.invokeMethod<String>('login', {"userId":userId});
+    await methodChannel.invokeMethod<String>('login', {"userId": userId});
   }
 
   @override

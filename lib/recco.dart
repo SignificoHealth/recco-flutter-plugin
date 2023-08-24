@@ -140,4 +140,3 @@ class ReccoStyleColors {
       this.illustration,
       this.illustrationOutline);
 }
-
