@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     _initializeRecco(
-        "_20_0iKompsh-xy0Pc2YAYLHFimFV0qCZVSPobB982K1dIhhkYwbhutnBsSQsNqV0aludu8");
+        "99ItJU5LzZKmLggRvGJMWWxd9mEek7MKedmkZ4_3Wb4yKVJ17lm3K6Smh8eUp3GuFIPq0-w");
 
     super.initState();
     _userId = _prefs.then((SharedPreferences prefs) {
