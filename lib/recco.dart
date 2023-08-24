@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'recco_platform_interface.dart';
 
 class Recco {
-
   /// Configures Recco given a [clientSecret] and a [style].
   ///
   /// UI can be customized setting a [style] from the currently available: `Fresh`, `Ocean`, `Spring`, `Tech`
