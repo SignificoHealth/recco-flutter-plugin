@@ -1,6 +1,6 @@
 name: recco
 description: A Flutter plugin for both iOS and Android recco-sdk.
-version: 0.0.2
+version: 0.0.3
 
 homepage: "https://github.com/sf-recco/flutter-showcase"
 

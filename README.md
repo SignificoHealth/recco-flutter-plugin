@@ -5,7 +5,7 @@
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![iOS](https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white)
 
-![Pub DEV](https://img.shields.io/badge/PubDev-0.0.2-blue)
+![Pub DEV](https://img.shields.io/badge/PubDev-0.0.3-blue)
 
 # Recco Flutter Plugin
 
@@ -27,7 +27,7 @@ Add this to pubspec.yaml
 
 ```yml
 dependencies:
-  recco: 0.0.2
+  recco: 0.0.3
 ```
 
 ## Setup on Android
