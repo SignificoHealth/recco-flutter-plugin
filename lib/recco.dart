@@ -32,10 +32,14 @@ class ReccoStyle {
   final String name;
   final ReccoStyleColors dark;
   final ReccoStyleColors light;
+  final IOSFont iOSFont;
+  final AndroidFont androidFont;
 
-  ReccoStyle(this.name, this.dark, this.light);
+  ReccoStyle(this.name, this.dark, this.light, this.iOSFont, this.androidFont);
 
-  static ReccoStyle fresh() {
+  static ReccoStyle fresh(
+      {IOSFont iosFont = IOSFont.sfPro,
+      AndroidFont androidFont = AndroidFont.poppins}) {
     return ReccoStyle(
         "Fresh",
         ReccoStyleColors(
@@ -55,10 +59,14 @@ class ReccoStyle {
             const Color(0xFF7b61ff),
             const Color(0xFF2c2783),
             const Color(0xFFf5b731),
-            const Color(0xFF454138)));
+            const Color(0xFF454138)),
+        iosFont,
+        androidFont);
   }
 
-  static ReccoStyle ocean() {
+  static ReccoStyle ocean(
+      {IOSFont iosFont = IOSFont.sfPro,
+      AndroidFont androidFont = AndroidFont.poppins}) {
     return ReccoStyle(
         "Ocean",
         ReccoStyleColors(
@@ -78,10 +86,14 @@ class ReccoStyle {
             const Color(0xFF35b9ff),
             const Color(0xFF17445b),
             const Color(0xFFf5a08c),
-            const Color(0xFF105a81)));
+            const Color(0xFF105a81)),
+        iosFont,
+        androidFont);
   }
 
-  static ReccoStyle spring() {
+  static ReccoStyle spring(
+      {IOSFont iosFont = IOSFont.sfPro,
+      AndroidFont androidFont = AndroidFont.poppins}) {
     return ReccoStyle(
         "Spring",
         ReccoStyleColors(
@@ -101,10 +113,14 @@ class ReccoStyle {
             const Color(0xFFea8822),
             const Color(0xFF2c2783),
             const Color(0xFFffc188),
-            const Color(0xFF306d49)));
+            const Color(0xFF306d49)),
+        iosFont,
+        androidFont);
   }
 
-  static ReccoStyle tech() {
+  static ReccoStyle tech(
+      {IOSFont iosFont = IOSFont.sfPro,
+      AndroidFont androidFont = AndroidFont.poppins}) {
     return ReccoStyle(
         "Tech",
         ReccoStyleColors(
@@ -124,7 +140,9 @@ class ReccoStyle {
             const Color(0xFFbab714),
             const Color(0xFF6a6d65),
             const Color(0xFFf5b731),
-            const Color(0xFF403f15)));
+            const Color(0xFF403f15)),
+        iosFont,
+        androidFont);
   }
 }
 
@@ -148,3 +166,7 @@ class ReccoStyleColors {
       this.illustration,
       this.illustrationOutline);
 }
+
+enum AndroidFont { poppins, roboto, montserrat, workSans, nunitoSans, bitter }
+
+enum IOSFont { sfPro, helveticaNeue, avenirNext, appleSdGothicNeo, georgia }

@@ -42,9 +42,25 @@ public class ReccoPlugin: NSObject, FlutterPlugin {
                  let colors = style["colors"] as! [String: Any]
                  let dark = colors["dark"] as! [String: String]
                  let light = colors["light"] as! [String: String]
+                   
+                 let reccoFont: ReccoFont
 
+                 switch style["iosFont"] as! String {
+                    case "helveticaNeue":
+                        reccoFont = ReccoFont.helveticaNeue
+                    case "avenirNext":
+                        reccoFont = ReccoFont.avenirNext
+                    case "appleSdGothicNeo":
+                        reccoFont = ReccoFont.appleSdGothicNeo
+                    case "georgia":
+                        reccoFont = ReccoFont.georgia
+                    default:
+                        reccoFont = ReccoFont.sfPro
+                 }
+                   
                  let reccoStyle = ReccoStyle(
                     name: styleName,
+                    font: reccoFont,
                     color: .init(
                     primary: .init(lightModeHex: light["primary"]!.fixJavaHex, darkModeHex: dark["primary"]!.fixJavaHex),
                     onPrimary: .init(lightModeHex: light["onPrimary"]!.fixJavaHex, darkModeHex: dark["onPrimary"]!.fixJavaHex),

@@ -12,6 +12,8 @@ class MethodChannelRecco extends ReccoPlatform {
       "clientSecret": clientSecret,
       "style": {
         "name": style.name,
+        "iosFont": style.iOSFont.name,
+        "androidFont": style.androidFont.name,
         "colors": {
           "dark": {
             "primary": style.dark.primary.toHex(),

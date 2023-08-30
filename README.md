@@ -144,7 +144,10 @@ Initialize Recco SDK at the `initState` of your app.
 ```dart
 Future<void> _initializeRecco(String clientSecret) async {
     try {
-      _reccoPlugin.initialize(clientSecret, ReccoStyle.spring());
+      _reccoPlugin.initialize(clientSecret, ReccoStyle.spring(
+         androidFont: AndroidFont.poppins,
+         iosFont: IOSFont.sfPro
+      ));
     } on PlatformException catch (e) {
       debugPrint("Error: '${e.message}'.");
     }
