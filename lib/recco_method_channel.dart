@@ -11,7 +11,6 @@ class MethodChannelRecco extends ReccoPlatform {
     await methodChannel.invokeMethod<String>('initialize', {
       "clientSecret": clientSecret,
       "style": {
-        "name": style.name,
         "iosFont": style.iOSFont.name,
         "androidFont": style.androidFont.name,
         "colors": {

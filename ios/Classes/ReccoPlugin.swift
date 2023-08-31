@@ -38,7 +38,6 @@ public class ReccoPlugin: NSObject, FlutterPlugin {
                let clientSecret = args["clientSecret"] as? String {
 
                if let style = args["style"] as? [String: Any] {
-                 let styleName = style["name"] as! String
                  let colors = style["colors"] as! [String: Any]
                  let dark = colors["dark"] as! [String: String]
                  let light = colors["light"] as! [String: String]
@@ -59,7 +58,7 @@ public class ReccoPlugin: NSObject, FlutterPlugin {
                  }
                    
                  let reccoStyle = ReccoStyle(
-                    name: styleName,
+                    name: "reccoStyle",
                     font: reccoFont,
                     color: .init(
                     primary: .init(lightModeHex: light["primary"]!.fixJavaHex, darkModeHex: dark["primary"]!.fixJavaHex),
