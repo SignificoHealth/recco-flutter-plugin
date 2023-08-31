@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'login_content.dart';
-import 'logout_content.dart';
-
-import 'package:recco/recco.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:recco/recco.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'login_content.dart';
+import 'logout_content.dart';
 
 enum ScreenState { loginForm, logout }
 
@@ -141,7 +141,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _initializeRecco(String clientSecret) async {
     try {
-      _reccoPlugin.initialize(clientSecret, ReccoStyle.spring());
+      _reccoPlugin.initialize(
+          clientSecret,
+          ReccoStyle.spring(
+              androidFont: AndroidFont.poppins, iosFont: IOSFont.sfPro));
     } on PlatformException catch (e) {
       debugPrint("Error: '${e.message}'.");
     }

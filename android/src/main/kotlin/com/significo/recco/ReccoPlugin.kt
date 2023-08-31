@@ -43,13 +43,19 @@ class ReccoPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             INITIALIZE_METHOD -> {
                 call.argument<String>(CLIENT_SECRET_ARG)?.let { clientSecret ->
                     val style = call.argument<HashMap<String, Any>>("style")?.let {
-                        val styleName = it["name"] as String
                         val colors = it["colors"] as HashMap<*, *>
                         val dark = colors["dark"] as HashMap<String, String>
                         val light = colors["light"] as HashMap<String, String>
 
                         ReccoStyle(
-                            font = ReccoFont.POPPINS,
+                            font = when (it["androidFont"] as String) {
+                                "roboto" -> ReccoFont.ROBOTO
+                                "montserrat" -> ReccoFont.MONTSERRAT
+                                "workSans" -> ReccoFont.WORK_SANS
+                                "nunitoSans" -> ReccoFont.NUNITO_SANS
+                                "bitter" -> ReccoFont.BITTER
+                                else -> ReccoFont.POPPINS
+                            },
                             palette = ReccoPalette.Custom(
                                 darkColors = ReccoColors(
                                     primary = dark["primary"]!!,
