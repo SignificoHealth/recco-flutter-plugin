@@ -9,6 +9,6 @@ Open a PR with the following changes:
 ## Publish to pub.dev
 Double check running `flutter pub publish --dry-run` that there are no warnings before actually publishing the new release by executing `flutter pub publish`.
 
-[CHANGELOG]:./CHANGELOG.md
-[README]:./README.md
-[pubspec]:./pubspec.yaml
+[CHANGELOG]:../CHANGELOG.md
+[README]:../README.md
+[pubspec]:../pubspec.yaml
