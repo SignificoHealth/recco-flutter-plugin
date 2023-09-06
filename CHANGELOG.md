@@ -1,3 +1,7 @@
+## 0.1.1
+
+* Release a new version after organization rename and breaking existing artifacts
+
 ## 0.1.0
 
 * Provide support for custom palette for both iOS and Android

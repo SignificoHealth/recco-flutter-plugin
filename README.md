@@ -5,7 +5,7 @@
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![iOS](https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white)
 
-![Pub DEV](https://img.shields.io/badge/PubDev-0.1.0-blue)
+![Pub DEV](https://img.shields.io/badge/PubDev-0.1.1-blue)
 
 # Recco Flutter Plugin
 
@@ -27,7 +27,7 @@ Add this to pubspec.yaml
 
 ```yml
 dependencies:
-  recco: 0.1.0
+  recco: 0.1.1
 ```
 
 ## Setup on Android
@@ -49,7 +49,7 @@ repositories {
     maven { url 'https://jitpack.io' }
     maven {
         name = "GithubPackages"
-        url = "https://maven.pkg.github.com/sf-recco/android-sdk"
+        url = "https://maven.pkg.github.com/SignificoHealth/recco-android-sdk"
         credentials {
             username = gprUser
             password = gprKey
@@ -191,8 +191,8 @@ Future<void> _openReccoUI() async {
 }
 ```
 
-[Flutter example Android app]:https://github.com/sf-recco/flutter-showcase/tree/main/example/android
-[Recco SDK Android]:https://github.com/sf-recco/android-sdk
-[Recco SDK iOS]:https://github.com/sf-recco/ios-sdk
+[Flutter example Android app]:https://github.com/SignificoHealth/recco-flutter-plugin/tree/main/example/android
+[Recco SDK Android]:https://github.com/SignificoHealth/recco-android-sdk
+[Recco SDK iOS]:https://github.com/SignificoHealth/recco-ios-sdk
 [Github-Packages]:https://github.com/features/packages
 [PAT]:https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
