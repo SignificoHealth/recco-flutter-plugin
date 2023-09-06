@@ -49,7 +49,7 @@ repositories {
     maven { url 'https://jitpack.io' }
     maven {
         name = "GithubPackages"
-        url = "https://maven.pkg.github.com/sf-recco/android-sdk"
+        url = "https://maven.pkg.github.com/SignificoHealth/recco-android-sdk"
         credentials {
             username = gprUser
             password = gprKey
@@ -191,8 +191,8 @@ Future<void> _openReccoUI() async {
 }
 ```
 
-[Flutter example Android app]:https://github.com/sf-recco/flutter-showcase/tree/main/example/android
-[Recco SDK Android]:https://github.com/sf-recco/android-sdk
-[Recco SDK iOS]:https://github.com/sf-recco/ios-sdk
+[Flutter example Android app]:https://github.com/SignificoHealth/recco-flutter-plugin/tree/main/example/android
+[Recco SDK Android]:https://github.com/SignificoHealth/recco-android-sdk
+[Recco SDK iOS]:https://github.com/SignificoHealth/recco-ios-sdk
 [Github-Packages]:https://github.com/features/packages
 [PAT]:https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
