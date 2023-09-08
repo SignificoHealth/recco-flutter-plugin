@@ -5,7 +5,7 @@ version: 0.1.1
 homepage: "https://github.com/sf-recco/flutter-showcase"
 
 environment:
-  sdk: '>=3.0.3 <4.0.0'
+  sdk: '>=2.18.4 <4.0.0'
   flutter: ">=3.3.0"
 
 dependencies:
