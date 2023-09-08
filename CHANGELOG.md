@@ -1,3 +1,7 @@
+## 0.1.2
+
+* Support lower version of Dart
+
 ## 0.1.1
 
 * Release a new version after organization rename and breaking existing artifacts
