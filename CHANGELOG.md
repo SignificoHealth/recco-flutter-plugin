@@ -1,3 +1,7 @@
+## 0.1.3
+
+* Document customization entry points
+
 ## 0.1.2
 
 * Support lower version of Dart
