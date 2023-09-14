@@ -154,6 +154,10 @@ Future<void> _initializeRecco(String clientSecret) async {
   }
 ```
 
+As part of the initialize setup, you need to supply a `ReccoStyle` instance to configure some customization entry points:
+* `IOSFont` & `AndroidFont`: These components expose the set of available predefined fonts for each platform.
+* `ReccoStyleColors`: Defines the available colors to be customized as part of the palette. There already existing palettes to choose from, such as fresh or ocean.
+
 ## Login
 
 ```dart
