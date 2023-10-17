@@ -1,4 +1,4 @@
-## 0.1.3
+## 1.0.0
 
 * Bump Android SDK version to 1.0.0 and the Android compileSdkVersion to 34
 
