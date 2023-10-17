@@ -45,7 +45,7 @@ apply plugin: 'kotlin-android'
 
 android {
 
-    compileSdkVersion 33
+    compileSdkVersion 34
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -61,13 +61,13 @@ android {
 
     defaultConfig {
         minSdkVersion 24
-        targetSdkVersion 33
+        targetSdkVersion 34
     }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation("com.significo:recco-api-ui:0.0.6")
+    implementation("com.significo:recco-api-ui:1.0.0")
 
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
     testImplementation 'org.mockito:mockito-core:5.3.1'

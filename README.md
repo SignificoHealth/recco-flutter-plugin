@@ -5,11 +5,12 @@
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![iOS](https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white)
 
-![Pub DEV](https://img.shields.io/badge/PubDev-0.1.3-blue)
+![Pub DEV](https://img.shields.io/badge/PubDev-1.0.0-blue)
 
 # Recco Flutter Plugin
 
 This repository holds the codebase for the Recco Flutter plugin. Instructions on how to add and use this plugin can be found in the [Usage](#usage) section.
+
 
 
 # Overview
@@ -27,7 +28,7 @@ Add this to pubspec.yaml
 
 ```yml
 dependencies:
-  recco: 0.1.3
+  recco: 1.0.0
 ```
 
 ## Setup on Android
