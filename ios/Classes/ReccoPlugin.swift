@@ -1,5 +1,6 @@
 import Flutter
 import UIKit
+import ReccoHeadless
 import ReccoUI
 
 extension UIWindow {
@@ -42,19 +43,19 @@ public class ReccoPlugin: NSObject, FlutterPlugin {
                  let dark = colors["dark"] as! [String: String]
                  let light = colors["light"] as! [String: String]
                    
-                 let reccoFont: ReccoFont
+                 let reccoFont: AppFont
 
                  switch style["iosFont"] as! String {
                     case "helveticaNeue":
-                        reccoFont = ReccoFont.helveticaNeue
+                        reccoFont = AppFont.helveticaNeue
                     case "avenirNext":
-                        reccoFont = ReccoFont.avenirNext
+                        reccoFont = AppFont.avenirNext
                     case "appleSdGothicNeo":
-                        reccoFont = ReccoFont.appleSdGothicNeo
+                        reccoFont = AppFont.appleSdGothicNeo
                     case "georgia":
-                        reccoFont = ReccoFont.georgia
+                        reccoFont = AppFont.georgia
                     default:
-                        reccoFont = ReccoFont.sfPro
+                        reccoFont = AppFont.sfPro
                  }
                    
                  let reccoStyle = ReccoStyle(
