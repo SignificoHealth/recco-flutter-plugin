@@ -63,6 +63,16 @@ repositories {
 
 Ensure that in your root/top level `build.gradle` file the Android Gradle plugin version is at least `7.4.0`
 
+Ensure that in your root/top level `build.gradle` file the Kotlin version is at least `1.9.0`
+
+```groovy
+buildscript {
+    ext.kotlin_version = '1.9.0'
+    ...
+}    
+```
+
+
 Make sure also that in your app `build.gradle` is provided the following source compatibility configuration:
 
 ```groovy
