@@ -2,12 +2,12 @@ PODS:
   - Flutter (1.0.0)
   - integration_test (0.0.1):
     - Flutter
-  - Kingfisher (7.9.1)
+  - Kingfisher (7.10.1)
   - recco (0.0.1):
     - Flutter
-    - ReccoUI
-  - ReccoHeadless (1.0.3)
-  - ReccoUI (1.0.3):
+    - ReccoUI (~> 1.1.0)
+  - ReccoHeadless (1.1.0)
+  - ReccoUI (1.1.0):
     - Kingfisher
     - ReccoHeadless
   - shared_preferences_foundation (0.0.1):
@@ -18,8 +18,8 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - recco (from `.symlinks/plugins/recco/ios`)
-  - ReccoHeadless (= 1.0.3)
-  - ReccoUI (= 1.0.3)
+  - ReccoHeadless
+  - ReccoUI
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
 
 SPEC REPOS:
@@ -41,12 +41,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   integration_test: 13825b8a9334a850581300559b8839134b124670
-  Kingfisher: 1d14e9f59cbe19389f591c929000332bf70efd32
-  recco: 84b6faf39e249e5e8bd854ac52070f778488c4ee
-  ReccoHeadless: cdb494a6230bff30429011187ca4a4d2ef4f0b52
-  ReccoUI: c2b99fca6e7b244acc57a19f2a4d241bed83a6d9
+  Kingfisher: bc5abe80a8e0144537ef1dd5a0b2621b04f7f439
+  recco: 7a6b54ef54c5cf788095601d8e8bb09f91f558c6
+  ReccoHeadless: cfabc834b9ecbbcd7204590ecd5201d1e713c619
+  ReccoUI: 6bff564382c8bff2d3c53abc94e87f91fb6b6077
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
 
-PODFILE CHECKSUM: 4c24ffdb591419d3130e22def654989de906ca77
+PODFILE CHECKSUM: 14ac5f45c428b2542df59bb9497141a36c9225c9
 
 COCOAPODS: 1.12.1
