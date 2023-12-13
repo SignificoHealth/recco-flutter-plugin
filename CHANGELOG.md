@@ -1,4 +1,4 @@
-## 1.0.0
+## 1.1.0
 
 * Bump Android and iOS SDK version to 1.1.0.
 
