@@ -135,7 +135,8 @@ and add it to the `AndroidManifest.xml`
 You can check the [Flutter example Android app][Flutter example Android app] for more details.
 
 ## Setup on iOS
-This Flutter plugin internally depends on the Recco iOS SDK, which exposes its components through CocoaPods. Therefore, you need to add the Recco pod to your `Podfile` as follow:
+
+This Flutter plugin internally depends on the Recco iOS SDK, which exposes its components through CocoaPods. **Important: Please make sure your Cocoapods master repo is up to date by running `pod repo update`**. After this, you need to add the Recco pod to your `Podfile` as follow:
 
 ```
 pod 'ReccoUI'
