@@ -15,7 +15,7 @@ Brings all Significo Recco features to Flutter platform.
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'ReccoUI', '~> 1.1.0'
+  s.dependency 'ReccoUI', '~> 1.2.0'
 
   s.platform = :ios, '14.0'
 
