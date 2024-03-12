@@ -33,6 +33,14 @@ dependencies:
 
 ## Setup on Android
 
+Ensure to have these keys in your `example/android/local.properties` file
+
+```
+sdk.dir=path_to_your_android_sdk
+flutter.sdk=path_to_your_flutter_sdk
+flutter.compileSdkVersion=34
+```
+
 ### Github Packages
 
 This Flutter plugin internally depends on the Recco Android SDK, which exposes its components through Github Packages. Therefore, the configuration for [Github Packages][Github-Packages] is required. Please refer to the [Personal Access Token][PAT] section to obtain a valid set of credentials. Once you have a valid Github PAT, proceed to configure your `gradle.properties` file located under the ~/.gradle/ folder.
